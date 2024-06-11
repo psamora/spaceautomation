@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://b7eq0scbxqyie"]
+
+[ext_resource type="Texture2D" uid="uid://cpm0vsmsffcmj" path="res://Scenes/Entities/Belt/transport-belt.png" id="1_ahyho"]
+
+[resource]
+atlas = ExtResource("1_ahyho")
+region = Rect2(0, 0, 64, 64)

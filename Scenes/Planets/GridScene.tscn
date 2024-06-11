@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4mxcrmradcw6"]
+
+[sub_resource type="GDScript" id="GDScript_8h2vp"]
+
+[node name="GridScene" type="Node2D"]
+script = SubResource("GDScript_8h2vp")

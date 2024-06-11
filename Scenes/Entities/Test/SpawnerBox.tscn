@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://blqbm7xo5d1cb"]
+
+[ext_resource type="Texture2D" uid="uid://dsaia7gxf0pt3" path="res://Assets/Textures/Entities/Chest/iron-chest.png" id="1_n5pki"]
+[ext_resource type="Script" path="res://Scenes/Entities/Test/SpawnerBox.cs" id="2_atekw"]
+
+[node name="SpawnerBox" type="Sprite2D"]
+texture = ExtResource("1_n5pki")
+centered = false
+script = ExtResource("2_atekw")
