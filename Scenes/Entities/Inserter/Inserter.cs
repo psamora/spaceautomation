@@ -36,14 +36,18 @@ public partial class Inserter : PlacedEntity {
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
 
+  private int frameCount = 0;
   public override void _Process(double delta) {
-    if (!isHoldingItem) {
-      TryToGrabItem();
-    }
+    if (frameCount % 4 == 0) {
+      if (!isHoldingItem) {
+        TryToGrabItem();
+      }
 
-    if (isHoldingItem && isHeldItemWaitingForOutput) {
-      TryToPlaceItem();
+      if (isHoldingItem && isHeldItemWaitingForOutput) {
+        TryToPlaceItem();
+      }
     }
+    frameCount++;
   }
 
   public void UpdateDirection(Direction direction, NeighboringEntities<PlacedEntity> placedEntities) {
@@ -110,7 +114,12 @@ public partial class Inserter : PlacedEntity {
       return;
     }
 
-    bool itemDropped = destinationEntity.PlaceItems(heldItem, numOfHeldItems);
+    bool useTopLine = true;
+    if (destinationEntity as Belt != null) {
+      useTopLine = (destinationEntity as Belt).GetFarthestTransportLineComingFromDirection(
+        direction).isTopTransportLine;
+    }
+    bool itemDropped = destinationEntity.PlaceItems(heldItem, numOfHeldItems, useTopLine);
     if (!itemDropped) {
       return;
     }

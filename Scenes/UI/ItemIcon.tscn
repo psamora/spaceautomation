@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://brfqwjawlux3"]
+
+[ext_resource type="Theme" uid="uid://dphrfm8me5gxu" path="res://Scenes/UI/DefaultTheme.tres" id="1_83g6f"]
+[ext_resource type="Texture2D" uid="uid://cfvvayw2i707l" path="res://Assets/Textures/Items/pile-dust-crushed-iron-ore-1.png" id="2_sjque"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4i4s"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3epyg"]
+atlas = ExtResource("2_sjque")
+region = Rect2(68, 189, 876, 584)
+
+[node name="ItemIconBorder" type="Panel"]
+custom_minimum_size = Vector2(64, 64)
+size_flags_horizontal = 4
+theme = ExtResource("1_83g6f")
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4i4s")
+
+[node name="ItemIconButton" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -32.0
+offset_right = 34.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_83g6f")
+theme_override_constants/icon_max_width = 60
+icon = SubResource("AtlasTexture_3epyg")
+icon_alignment = 1

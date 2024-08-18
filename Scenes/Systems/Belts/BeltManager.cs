@@ -42,11 +42,14 @@ public partial class BeltManager : Node {
   public override void _Process(double delta) {
     // TODO: This loop likely doesn't have to run every tick, maybe once a second or minute
     MergeAndCleanUpTransportLines();
-    if (frameCount % 2 == 0) {
+
+    // TODO: this loop has to run based on belt speed, whole other beast
+    if (frameCount % 4 == 0) {
       TryToOutputTransportLines();
       AdvanceTransportLines();
-      PaintTransportLines();
     }
+
+    PaintDebugTransportLines();
     frameCount++;
   }
 
@@ -69,8 +72,9 @@ public partial class BeltManager : Node {
         continue;
       }
 
+      bool isTopTransportLine = transportLine.isTopTransportLine;
       // The belt we are facing may be part of our transport line already. If so, stop
-      if (transportLine == transportLineFacingBelt.GetTransportLine()) {
+      if (transportLine == transportLineFacingBelt.GetTransportLine(isTopTransportLine)) {
         continue;
       }
 
@@ -83,25 +87,44 @@ public partial class BeltManager : Node {
         continue;
       }
 
-      if (transportLine.Size() + transportLineFacingBelt.GetTransportLine().Size()
+      if (transportLine.Size() + transportLineFacingBelt.GetTransportLine(isTopTransportLine).Size()
           <= TRANSPORT_LINE_MAX_SIZE) {
-        transportLine.Merge(transportLineFacingBelt.GetTransportLine());
+        transportLine.Merge(transportLineFacingBelt.GetTransportLine(isTopTransportLine));
       }
     }
     transportLines.ExceptWith(linesToCleanUp);
   }
 
   private void TryToOutputTransportLines() {
+    foreach (TransportLine transportLine in transportLines) {
+      if (transportLine.IsEmpty()) {
+        continue;
+      }
 
+      // Get any TransportLine that the end of the Transport line may be facing
+      Belt lastBeltInLine = transportLine.GetLastBeltInLine();
+      NeighboringEntities<Belt> neighboringBelts =
+        GetNeighboringEntities<Belt>(lastBeltInLine.xPos, lastBeltInLine.yPos);
+      Belt facingBelt =
+        neighboringBelts.GetFacingEntity(lastBeltInLine.placedDirection);
+      TransportLine outputTransportLine =
+        facingBelt?.GetNearestTransportLineComingFromDirection(lastBeltInLine.placedDirection);
+      transportLine.TryToOutputToNextTransportLine(outputTransportLine, facingBelt);
+    }
   }
 
   private void AdvanceTransportLines() {
     foreach (TransportLine transportLine in transportLines) {
+      if (transportLine.IsEmpty()) {
+        continue;
+      }
+
       transportLine.AdvanceTransportLine();
+      //Debug.Print($"{transportLine.ToString()}");
     }
   }
 
-  private void PaintTransportLines() {
+  private void PaintDebugTransportLines() {
     itemAndPositionToPaint.Clear();
     Dictionary<TempItem, int> numberVisibleItems = new Dictionary<TempItem, int>();
     foreach (TransportLine transportLine in transportLines) {
@@ -203,15 +226,17 @@ public partial class BeltManager : Node {
   }
 
   private void CreateOrSplitIntoNewTransportLine(Belt belt) {
-    if (belt.GetTransportLine() == null) {
-      transportLines.Add(new TransportLine(belt));
-      return;
+    foreach (bool isTopTransportLine in new List<bool>() { true, false }) {
+      if (belt.GetTransportLine(isTopTransportLine) == null) {
+        transportLines.Add(new TransportLine(belt, isTopTransportLine));
+        continue;
+      }
+      var (beforeLine, curLine, afterLine) =
+        TransportLine.SplitTransportLineOnBelt(belt.GetTransportLine(isTopTransportLine), belt);
+      transportLines.Add(beforeLine);
+      transportLines.Add(curLine);
+      transportLines.Add(afterLine);
     }
-    var (beforeLine, curLine, afterLine) =
-      TransportLine.SplitTransportLineOnBelt(belt.GetTransportLine(), belt);
-    transportLines.Add(beforeLine);
-    transportLines.Add(curLine);
-    transportLines.Add(afterLine);
   }
 
   public bool AddInserter(int xPos, int yPos, Direction inserterDirection) {

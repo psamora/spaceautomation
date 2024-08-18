@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=5 format=3 uid="uid://b04gbiivhan3h"]
+
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/OutputItem.cs" id="1_lcepd"]
+[ext_resource type="Texture2D" uid="uid://bpkq2lowayamk" path="res://Assets/Textures/Items/metal-ingot-iron-1.png" id="1_mfvp4"]
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/Recipe.cs" id="2_2wb1r"]
+
+[sub_resource type="Resource" id="Resource_ibgvd"]
+script = ExtResource("1_lcepd")
+outputItemId = "iron-plate"
+itemAmount = 10
+outputProbability = 100
+
+[resource]
+script = ExtResource("2_2wb1r")
+recipeId = "iron-plate-t4"
+recipeName = "Iron Plate (T4)"
+recipeIcon = ExtResource("1_mfvp4")
+productionTimeInS = 2
+fuelCostInJ = 5
+temperatureOutput = 1.0
+noiseOutput = 50.0
+pollutionOutput = 10.0
+radiationOutput = 0.0
+canBeHandcrafted = true
+canBeModulated = false
+eligibleProducerBuildingId = []
+requiredSpecificItems = []
+requiredItemBehaviors = []
+outputItems = [SubResource("Resource_ibgvd")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dgg152vegpg6g"]
+
+[node name="SearchResult" type="Button"]
+text = "Iron Plate"
+alignment = 0

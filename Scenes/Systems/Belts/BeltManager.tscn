@@ -63,7 +63,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray(0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 193, 0, 0, 0, 65, 0, 0, 0, 193, 0, 0, 0, 193, 0, 0, 0, 65, 0, 0, 0, 193)
 }]
 
-[node name="BeltManager" type="Node"]
+[node name="BeltManager" type="Node2D"]
 script = ExtResource("1_1qu56")
 beltScene = ExtResource("2_crypc")
 

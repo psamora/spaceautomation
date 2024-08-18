@@ -2,26 +2,27 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 public partial class Belt : PlacedEntity {
-  private const int BELT_SLOTS = 4;
+  [Export] PackedScene beltMetadataScene;
+  // todo: refactor
+  private static Dictionary<BeltOrientation, BeltMetadata> orientationToBeltMetadata =
+    new Dictionary<BeltOrientation, BeltMetadata>();
 
   // TODO: revisit visibility/getts
   public int xPos;
   public int yPos;
   public Direction placedDirection;
   public BeltOrientation beltOrientation;
-  private TransportLine curTransportLine;
+  private TransportLine topTransportLine;
+  private TransportLine bottomTransportLine;
 
   private Vector2 beltCornerWorldPosition;
-  private Vector2[] topBeltSlotWorldPositions = new Vector2[BELT_SLOTS];
-  private Vector2[] bottomBeltSlotWorldPositions = new Vector2[BELT_SLOTS];
+  private Vector2[] topBeltSlotWorldPositions;
+  private Vector2[] bottomBeltSlotWorldPositions;
   private AnimationPlayer animationPlayer;
   private Timer beltSyncTimer;
-
-  private Node2D rightSlots;
-  private Node2D upSlots;
-  private Node2D rightDownSlots;
 
   private Line2D horizontalDebugLine;
   private Line2D verticalDebugLine;
@@ -36,10 +37,6 @@ public partial class Belt : PlacedEntity {
     beltSyncTimer = GetTree().GetFirstNodeInGroup("BeltTimer") as Timer;
     beltCornerWorldPosition = Position + new Vector2(16, 16);
 
-    rightSlots = GetNode<Node2D>("RightSlots");
-    upSlots = GetNode<Node2D>("UpSlots");
-    rightDownSlots = GetNode<Node2D>("RightDownSlots");
-
     horizontalDebugLine = GetNode<Line2D>("HorizontalDebugLine");
     verticalDebugLine = GetNode<Line2D>("VerticalDebugLine");
     diagonalDebugLineAnchor = GetNode<Node2D>("DiagonalDebugLineAnchor");
@@ -51,15 +48,60 @@ public partial class Belt : PlacedEntity {
     this.yPos = yPos;
   }
 
-  public TransportLine GetTransportLine() {
-    return curTransportLine;
+  public TransportLine GetTransportLine(bool getTopTransportLine) {
+    if (getTopTransportLine) {
+      return topTransportLine;
+    }
+    return bottomTransportLine;
   }
 
-  public void SetTransportLine(TransportLine transportLine) {
-    curTransportLine = transportLine;
-    horizontalDebugLine.DefaultColor = curTransportLine.GetDebugColor();
-    verticalDebugLine.DefaultColor = curTransportLine.GetDebugColor();
-    diagonalDebugLine.DefaultColor = curTransportLine.GetDebugColor();
+  public TransportLine GetNearestTransportLineComingFromDirection(Direction otherDirection) {
+    switch (otherDirection) {
+      case Direction.DOWN:
+        if (beltOrientation == BeltOrientation.LEFT) {
+          return bottomTransportLine;
+        } else {
+          return topTransportLine;
+        }
+      case Direction.UP:
+        if (beltOrientation == BeltOrientation.RIGHT) {
+          return bottomTransportLine;
+        } else {
+          return topTransportLine;
+        }
+      case Direction.LEFT:
+        if (beltOrientation == BeltOrientation.UP) {
+          return bottomTransportLine;
+        } else {
+          return topTransportLine;
+        }
+      case Direction.RIGHT:
+        if (beltOrientation == BeltOrientation.DOWN) {
+          return bottomTransportLine;
+        } else {
+          return topTransportLine;
+        }
+      default:
+        return topTransportLine;
+    }
+  }
+
+  public TransportLine GetFarthestTransportLineComingFromDirection(Direction otherDirection) {
+    if (GetNearestTransportLineComingFromDirection(otherDirection) == topTransportLine) {
+      return bottomTransportLine;
+    }
+    return topTransportLine;
+  }
+
+  public void SetTransportLine(TransportLine transportLine, bool isTopTransportLine) {
+    if (isTopTransportLine) {
+      topTransportLine = transportLine;
+      horizontalDebugLine.DefaultColor = topTransportLine.GetDebugColor();
+      verticalDebugLine.DefaultColor = topTransportLine.GetDebugColor();
+      diagonalDebugLine.DefaultColor = topTransportLine.GetDebugColor();
+    } else {
+      bottomTransportLine = transportLine;
+    }
   }
 
   public override Dictionary<TempItem, int> GetRequestedItems() {
@@ -70,8 +112,11 @@ public partial class Belt : PlacedEntity {
     return new Dictionary<TempItem, int> { };
   }
 
-  public override bool PlaceItems(TempItem itemType, int amount) {
-    return curTransportLine.MaybePlaceItemInBelt(itemType, this);
+  public override bool PlaceItems(TempItem itemType, int amount, bool topIfApplicable) {
+    if (topIfApplicable) {
+      return topTransportLine.MaybePlaceItemInBelt(itemType, this);
+    }
+    return bottomTransportLine.MaybePlaceItemInBelt(itemType, this);
   }
 
   public override int TakeItems(TempItem itemType, int maxAmount) {
@@ -81,12 +126,8 @@ public partial class Belt : PlacedEntity {
   public void UpdateBeltOrientation(BeltOrientation beltOrientation) {
     this.beltOrientation = beltOrientation;
     StartBeltAnimation();
-    // TODO: if we decide the fn below is too costly/storage wasting to run every belt change, we
-    // make the position belt positions local which makes it exactly to the same for all
-    // belts with the same BeltOrientation. But then we need to compute world positions all the
-    // time which may also not be a big deal. Requires profiling as always, my guess is this
-    // current behavior is better.
     PopulateBeltSlotWorldPositions();
+    DrawDebugLine();
   }
 
   public Vector2 GetWorldPositionForTopSlot(int beltSlotIndex) {
@@ -103,36 +144,41 @@ public partial class Belt : PlacedEntity {
   }
 
   private void PopulateBeltSlotWorldPositions() {
-    //rightSlots.Visible = false;
-    //upSlots.Visible = false;
-    //rightDownSlots.Visible = false;
+    BeltMetadata beltMetadata = orientationToBeltMetadata.GetOrNull(beltOrientation);
+    if (beltMetadata == null) {
+      beltMetadata = beltMetadataScene.Instantiate<BeltMetadata>();
+      beltMetadata.Initialize(beltOrientation);
+      GetParent().AddChild(beltMetadata);
+      orientationToBeltMetadata[beltOrientation] = beltMetadata;
+    }
+    topBeltSlotWorldPositions = beltMetadata.GetTopBeltWorldPositions(GlobalPosition);
+    bottomBeltSlotWorldPositions = beltMetadata.GetBottomBeltWorldPositions(GlobalPosition);
+  }
+
+  public override string ToString() {
+    return $"[{xPos}, {yPos}]";
+  }
+
+
+  private void DrawDebugLine() {
     horizontalDebugLine.Visible = false;
     verticalDebugLine.Visible = false;
     diagonalDebugLine.Visible = false;
 
-    // We have slot location templates for RIGHT, UP and RIGHT_DOWN belt orientations. All others
-    // are computed from either rotating the template some amount of degrees and/or by flipping
-    // top/bottom and start/end slots before we compute world positions.
-    Node2D slotsTemplateToUse;
     Line2D debugLineToUse;
     switch (beltOrientation) {
       case BeltOrientation.RIGHT:
       case BeltOrientation.LEFT:
-        slotsTemplateToUse = GetNode<Node2D>("RightSlots");
         debugLineToUse = horizontalDebugLine;
         break;
       case BeltOrientation.UP:
       case BeltOrientation.DOWN:
-        slotsTemplateToUse = GetNode<Node2D>("UpSlots");
         debugLineToUse = verticalDebugLine;
         break;
       default:
-        slotsTemplateToUse = GetNode<Node2D>("RightDownSlots");
         debugLineToUse = diagonalDebugLine;
         break;
     }
-
-    //slotsTemplateToUse.Visible = true;
     debugLineToUse.Visible = true;
 
     float rotationAngle;
@@ -154,61 +200,9 @@ public partial class Belt : PlacedEntity {
         break;
     }
 
-    bool flipTopBottomStartEnd;
-    switch (beltOrientation) {
-      case BeltOrientation.LEFT:
-      case BeltOrientation.DOWN:
-      case BeltOrientation.RIGHT_UP:
-      case BeltOrientation.LEFT_DOWN:
-      case BeltOrientation.UP_LEFT:
-      case BeltOrientation.DOWN_RIGHT:
-        flipTopBottomStartEnd = true;
-        break;
-      default:
-        flipTopBottomStartEnd = false;
-        break;
-    }
-
-    BuildGlobalPositionArrayForSlots(
-      slotsTemplateToUse, debugLineToUse, rotationAngle, flipTopBottomStartEnd);
-  }
-
-  private void BuildGlobalPositionArrayForSlots(
-    Node2D slotsTemplateToUse,
-    Line2D debugLineToUse,
-    float rotationAngle,
-    bool flipTopBottomStartEnd) {
-    slotsTemplateToUse.Rotation = 0;
-    slotsTemplateToUse.Rotate(Mathf.DegToRad(rotationAngle));
     if (debugLineToUse == diagonalDebugLine) {
       diagonalDebugLineAnchor.Rotation = 0;
       diagonalDebugLineAnchor.Rotate(Mathf.DegToRad(rotationAngle));
     }
-    Node2D firstSlotTop = slotsTemplateToUse.GetNode<Node2D>("FirstSlotTop");
-    Node2D lastSlotTop = slotsTemplateToUse.GetNode<Node2D>("LastSlotTop");
-    Node2D firstSlotBottom = slotsTemplateToUse.GetNode<Node2D>("LastSlotBottom");
-    Node2D lastSlotBottom = slotsTemplateToUse.GetNode<Node2D>("FirstSlotBottom");
-
-    if (flipTopBottomStartEnd) {
-      SwapLocations(firstSlotTop, lastSlotBottom);
-      SwapLocations(lastSlotTop, firstSlotBottom);
-    }
-
-    Vector2 topSlotStep = (lastSlotTop.Position - firstSlotTop.Position) / BELT_SLOTS;
-    Vector2 bottomSlotStep = (lastSlotBottom.Position - firstSlotBottom.Position) / BELT_SLOTS;
-    for (int i = 0; i < BELT_SLOTS; i++) {
-      topBeltSlotWorldPositions[i] = firstSlotTop.GlobalPosition + (i * topSlotStep);
-      bottomBeltSlotWorldPositions[i] = firstSlotBottom.GlobalPosition + (i * bottomSlotStep);
-    }
-  }
-
-  private void SwapLocations(Node2D src, Node2D dst) {
-    Vector2 temp = src.Position;
-    src.Position = dst.Position;
-    dst.Position = temp;
-  }
-
-  public override string ToString() {
-    return $"[{xPos}, {yPos}]";
   }
 }

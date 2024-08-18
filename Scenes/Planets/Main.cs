@@ -1,13 +1,22 @@
 using Godot;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 public partial class Main : Node2D {
 
   [Export]
   private BeltManager beltManager;
 
+  [Export]
+  private PackedScene recipeBookScene;
+
+  [Export]
+  private PackedScene itemBrowserScene;
+
   private Direction direction = Direction.UP;
+  private Control recipeBook = null;
+  private Control itemBrowser = null;
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready() {
@@ -40,6 +49,18 @@ public partial class Main : Node2D {
       Vector2 mousePosition = GetViewport().GetMousePosition();
       Vector2I gridPosition = GetNode<TileMap>("TileMap").LocalToMap(mousePosition);
       beltManager.AddSpawnerChest(gridPosition.X, gridPosition.Y, TempItem.COAL);
+    }
+    if (Input.IsActionJustPressed("escape")) {
+      if (recipeBook == null) {
+        recipeBook = recipeBookScene.Instantiate<Control>();
+        GetNode<CanvasLayer>("CanvasLayer").AddChild(recipeBook);
+      }
+    }
+    if (Input.IsActionJustPressed("i")) {
+      if (itemBrowser == null) {
+        itemBrowser = itemBrowserScene.Instantiate<Control>();
+        GetNode<CanvasLayer>("CanvasLayer").AddChild(itemBrowser);
+      }
     }
   }
 }

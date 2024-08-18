@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=11 format=3 uid="uid://bux7dlyh6n3d2"]
+
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/OutputItem.cs" id="1_0tsw5"]
+[ext_resource type="Texture2D" uid="uid://bpkq2lowayamk" path="res://Assets/Textures/Items/metal-ingot-iron-1.png" id="2_q6uba"]
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/RequiredItemBehavior.cs" id="3_reydx"]
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/RequiredItem.cs" id="3_sf5le"]
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/Recipe.cs" id="4_1dv0b"]
+
+[sub_resource type="Resource" id="Resource_ibgvd"]
+script = ExtResource("1_0tsw5")
+outputItemId = "iron-plate"
+itemAmount = 20
+outputProbability = 75
+
+[sub_resource type="Resource" id="Resource_k6oob"]
+script = ExtResource("3_reydx")
+itemAmount = 0
+requiredItemBehaviorType = 3
+
+[sub_resource type="Resource" id="Resource_q57mb"]
+script = ExtResource("3_reydx")
+itemAmount = 0
+requiredItemBehaviorType = 4
+
+[sub_resource type="Resource" id="Resource_tegtf"]
+script = ExtResource("3_sf5le")
+itemAmount = 10
+requiredItemId = "iron-ore"
+
+[sub_resource type="Resource" id="Resource_qh26w"]
+script = ExtResource("3_sf5le")
+itemAmount = 0
+requiredItemId = "iron-plate"
+
+[resource]
+script = ExtResource("4_1dv0b")
+recipeId = "iron-plate-t3"
+recipeName = "Iron Plate (T3)"
+recipeIcon = ExtResource("2_q6uba")
+productionTimeInS = 2
+fuelCostInJ = 8
+temperatureOutput = 10.0
+noiseOutput = 30.0
+pollutionOutput = -100.0
+radiationOutput = 10.0
+canBeHandcrafted = false
+canBeModulated = false
+eligibleProducerBuildingId = []
+requiredSpecificItems = [SubResource("Resource_tegtf"), SubResource("Resource_qh26w")]
+requiredItemBehaviors = [SubResource("Resource_k6oob"), SubResource("Resource_q57mb")]
+outputItems = [SubResource("Resource_ibgvd")]

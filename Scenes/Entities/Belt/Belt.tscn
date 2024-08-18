@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://ciskk20ese0s2"]
+[gd_scene load_steps=18 format=3 uid="uid://ciskk20ese0s2"]
 
 [ext_resource type="Texture2D" uid="uid://cpm0vsmsffcmj" path="res://Scenes/Entities/Belt/transport-belt.png" id="1_6yfyp"]
 [ext_resource type="Script" path="res://Scenes/Entities/Belt/Belt.cs" id="2_3tuf1"]
-[ext_resource type="Texture2D" uid="uid://bakyl74hvcmek" path="res://Assets/Textures/Items/iron-ore.png" id="3_ae3od"]
-[ext_resource type="Texture2D" uid="uid://bld8y6gnkb0cg" path="res://Assets/Textures/Items/copper-ore.png" id="4_phb4l"]
+[ext_resource type="PackedScene" uid="uid://bt2r6yt5vgqie" path="res://Scenes/Entities/Belt/BeltMetadata.tscn" id="3_xldm8"]
 
 [sub_resource type="Animation" id="Animation_vny3t"]
 length = 0.001
@@ -262,72 +261,13 @@ hframes = 16
 vframes = 20
 region_rect = Rect2(0, 0, 640, 640)
 script = ExtResource("2_3tuf1")
+beltMetadataScene = ExtResource("3_xldm8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_vjgw0")
 }
 autoplay = "up"
-
-[node name="RightSlots" type="Node2D" parent="."]
-visible = false
-y_sort_enabled = true
-position = Vector2(16, 16)
-
-[node name="FirstSlotTop" type="Sprite2D" parent="RightSlots"]
-position = Vector2(-10, -6)
-texture = ExtResource("3_ae3od")
-
-[node name="LastSlotTop" type="Sprite2D" parent="RightSlots"]
-position = Vector2(12, -6)
-texture = ExtResource("3_ae3od")
-
-[node name="FirstSlotBottom" type="Sprite2D" parent="RightSlots"]
-position = Vector2(-10, 8)
-texture = ExtResource("4_phb4l")
-
-[node name="LastSlotBottom" type="Sprite2D" parent="RightSlots"]
-position = Vector2(12, 8)
-texture = ExtResource("4_phb4l")
-
-[node name="UpSlots" type="Node2D" parent="."]
-visible = false
-position = Vector2(16, 16)
-
-[node name="FirstSlotTop" type="Sprite2D" parent="UpSlots"]
-position = Vector2(-8, 10)
-texture = ExtResource("3_ae3od")
-
-[node name="LastSlotTop" type="Sprite2D" parent="UpSlots"]
-position = Vector2(-8, -11)
-texture = ExtResource("3_ae3od")
-
-[node name="FirstSlotBottom" type="Sprite2D" parent="UpSlots"]
-position = Vector2(8, 10)
-texture = ExtResource("4_phb4l")
-
-[node name="LastSlotBottom" type="Sprite2D" parent="UpSlots"]
-position = Vector2(8, -11)
-texture = ExtResource("4_phb4l")
-
-[node name="RightDownSlots" type="Node2D" parent="."]
-visible = false
-position = Vector2(16, 16)
-
-[node name="FirstSlotTop" type="Sprite2D" parent="RightDownSlots"]
-position = Vector2(-10, -5)
-texture = ExtResource("3_ae3od")
-
-[node name="LastSlotTop" type="Sprite2D" parent="RightDownSlots"]
-texture = ExtResource("3_ae3od")
-
-[node name="FirstSlotBottom" type="Sprite2D" parent="RightDownSlots"]
-position = Vector2(-11, 8)
-texture = ExtResource("4_phb4l")
-
-[node name="LastSlotBottom" type="Sprite2D" parent="RightDownSlots"]
-position = Vector2(-8, 14)
-texture = ExtResource("4_phb4l")
 
 [node name="HorizontalDebugLine" type="Line2D" parent="."]
 visible = false

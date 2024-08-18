@@ -12,7 +12,7 @@ public abstract partial class PlacedEntity : Sprite2D {
     return new Dictionary<TempItem, int>();
   }
 
-  public virtual bool PlaceItems(TempItem itemType, int amount) {
+  public virtual bool PlaceItems(TempItem itemType, int amount, bool topIfApplicable) {
     return true;
   }
 

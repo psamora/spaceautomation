@@ -11,6 +11,8 @@ public class TransportLine {
   private const int STEPS_PER_BELT = 4;
   private const int SLOTS_PER_BELT = 4;
 
+  // TODO see visibility
+  public bool isTopTransportLine = true;
   private static Random debugColorRandom = new Random();
   private Color debugColor = new Color(1, 1, 1);
 
@@ -18,12 +20,12 @@ public class TransportLine {
   private Node<Belt> beltLinkedListHead = null;
   private Node<Belt> beltLinkedListTail = null;
 
-  // TODO replace ItemInLine with struct/something else
-  private Node<ItemInLine> itemsInLineLinkedListHead = null;
-  private Node<ItemInLine> itemsInLineLinkedListTail = null;
+  private Node<ItemInLine> itemsInLineHead = null;
+  private Node<ItemInLine> itemsInLineTail = null;
   private Node<ItemInLine> lastMovingNode = null;
 
-  private TransportLine() {
+  private TransportLine(bool isTopTransportLine) {
+    this.isTopTransportLine = isTopTransportLine;
     debugColor = new Color(
       (float) debugColorRandom.NextDouble(),
       (float) debugColorRandom.NextDouble(),
@@ -32,9 +34,9 @@ public class TransportLine {
     this.currentBelts = new HashSet<Belt>();
   }
 
-  public TransportLine(Belt initialBelt) : this() {
+  public TransportLine(Belt initialBelt, bool isTopTransportLine) : this(isTopTransportLine) {
     AddFirstBelt(initialBelt);
-    initialBelt.SetTransportLine(this);
+    initialBelt.SetTransportLine(this, isTopTransportLine);
     currentBelts.Add(initialBelt);
   }
 
@@ -43,65 +45,186 @@ public class TransportLine {
   // you're reading this :)
   public static (TransportLine, TransportLine, TransportLine) SplitTransportLineOnBelt(
       TransportLine line, Belt belt) {
-    TransportLine before = new TransportLine();
-    TransportLine current = new TransportLine(belt);
-    TransportLine after = new TransportLine();
+    TransportLine left = new TransportLine(line.isTopTransportLine);
+    TransportLine middle = new TransportLine(belt, line.isTopTransportLine);
+    TransportLine right = new TransportLine(line.isTopTransportLine);
 
     // It's possible to the actual split in O(1) just moving pointers around as long as we keep
     // a Belt->BeltNode mapping. But since we have to iterate the transport line contents
     // it's not really a major performance improvement (TBD).
-    Node<Belt> curNode = line.beltLinkedListHead;
-    bool passedSplitPoint = false;
+    Node<Belt> curNode = line.beltLinkedListTail;
+    SplitPhase splitPhase = SplitPhase.RIGHT;
+    int curBeltIndex = 0;
+    int cumulativeDistance = 0;
+    int totalBeltDistanceInRight = 0;
+    int cumulativeDistanceInRight = 0;
+    int totalBeltDistanceInMiddle = 0;
+    int cumulativeDistanceInMiddle = 0;
+    Node<ItemInLine> curItemInLineNode = null;
+    Node<ItemInLine> leftItemInLineHead = line.itemsInLineHead;
+    Node<ItemInLine> middleItemInLineHead = null;
+    Node<ItemInLine> middleItemInLineTail = null;
+    Node<ItemInLine> rightItemInLineTail = line.itemsInLineTail;
     while (curNode != null) {
-      if (curNode.Value() == belt) {
-        passedSplitPoint = true;
-        curNode = curNode.next;
-        continue;
+      int curBeltDistanceWindowMax = (STEPS_PER_BELT * curBeltIndex) + STEPS_PER_BELT;
+      if (curNode.Value() == belt && splitPhase == SplitPhase.RIGHT) {
+        splitPhase = SplitPhase.MIDDLE;
+        middleItemInLineTail = curItemInLineNode;
+      } else if (curNode.Value() != belt && splitPhase == SplitPhase.MIDDLE) {
+        splitPhase = SplitPhase.LEFT;
+        middleItemInLineHead = curItemInLineNode?.next;
       }
 
-      if (passedSplitPoint) {
-        after.AddBeltToEnd(curNode.Value());
-      } else {
-        before.AddBeltToEnd(curNode.Value());
+      switch (splitPhase) {
+        case SplitPhase.LEFT:
+          left.AddBeltToStart(curNode.Value());
+          break;
+        case SplitPhase.MIDDLE:
+          totalBeltDistanceInMiddle += STEPS_PER_BELT;
+          break;
+        case SplitPhase.RIGHT:
+          right.AddBeltToStart(curNode.Value());
+          totalBeltDistanceInRight += STEPS_PER_BELT;
+          break;
       }
-      curNode = curNode.next;
+
+      curNode = curNode.previous;
+      curBeltIndex++;
+
+      // Iterate the item LinkedList until we are out of the current belt and into the previous.
+      while (curItemInLineNode != null &&
+             cumulativeDistance + curItemInLineNode.Value().distanceToNextItem <= curBeltDistanceWindowMax) {
+        cumulativeDistance += curItemInLineNode.Value().distanceToNextItem;
+        switch (splitPhase) {
+          case SplitPhase.LEFT:
+            // not necessary to compute for splitting
+            break;
+          case SplitPhase.MIDDLE:
+            cumulativeDistanceInMiddle += curItemInLineNode.Value().distanceToNextItem;
+            break;
+          case SplitPhase.RIGHT:
+            cumulativeDistanceInRight += curItemInLineNode.Value().distanceToNextItem;
+            break;
+        }
+        curItemInLineNode = curItemInLineNode.previous;
+      }
     }
+
+    // Finally, configure the ItemInLine lists for each of the Transport Lines
+
+    // For the first belt, we need to adjust pointers and the distnace of the tail item
+    left.itemsInLineHead = leftItemInLineHead;
+    left.itemsInLineTail =
+      middleItemInLineHead?.previous == null ? left.itemsInLineHead :
+      middleItemInLineHead.previous;
+    left.lastMovingNode = left.itemsInLineTail;
+    if (left.itemsInLineTail != null) {
+      left.itemsInLineTail.Value().distanceToNextItem -=
+        totalBeltDistanceInRight + totalBeltDistanceInMiddle - totalBeltDistanceInRight - totalBeltDistanceInMiddle;
+    }
+
+    // For the middle belt, we need to adjust the pointers and distance of the tail item
+    middle.itemsInLineHead = middleItemInLineHead;
+    middle.itemsInLineTail =
+      middleItemInLineTail == null ? middle.itemsInLineHead :
+      middleItemInLineTail;
+    middle.lastMovingNode = middle.itemsInLineTail;
+    if (middleItemInLineHead != null) {
+      middleItemInLineHead.previous = null;
+      middleItemInLineTail.next = null;
+    }
+    if (middleItemInLineTail != null) {
+      middleItemInLineTail.Value().distanceToNextItem -=
+        totalBeltDistanceInRight - totalBeltDistanceInRight;
+    }
+
+    // Right side doesn't require adjusting any distances, only pointers.
+    right.itemsInLineTail = rightItemInLineTail;
+    right.itemsInLineHead = middleItemInLineTail?.next;
+    right.lastMovingNode = right.itemsInLineTail;
 
     // Reset incoming line, it's empty now.
     line.currentBelts.Clear();
     line.beltLinkedListHead = null;
     line.beltLinkedListTail = null;
-    return (before, current, after);
+    Debug.Print("Split complete:");
+    Debug.Print($"{left.ToString()}");
+    Debug.Print($"{middle.ToString()}");
+    Debug.Print($"{right.ToString()}");
+    return (left, middle, right);
   }
 
 
   // This method doesn't create new TransportLines, it does an inplace merge, emptying the second
   // in the process. Yeah it's inconsistent with the Split API :).
+  // TODO: we could do something smarter to reduce cost of merges if it's better to merge back
+  // to front instead of front to back.
   // TODO: make APIs consistent, or just deal with it.
+  // TODO: refactor
   public void Merge(TransportLine lineToAppend) {
     if (lineToAppend == this || lineToAppend.IsEmpty()) {
       return;
     }
 
-    // It's possible to the actual merge in O(1) just moving pointers around as long as we keep
-    // a Belt->BeltNode mapping. But since we have to iterate the transport line contents
-    // it's not really a major performance improvement (TBD).
+    // TODO: It's possible to the actual merge in O(1) just moving pointers around as long as we
+    // keep a Belt->BeltNode mapping, but it requires tracking the cumulative distance on a
+    // TransportLine which is probably doable (track total distance of items added, reduce when)
+    // we move stuff forward.
+    int numBeltsAddedOnFront = 0;
     Node<Belt> curNode = lineToAppend.beltLinkedListHead;
     while (curNode != null) {
       AddBeltToEnd(curNode.Value());
       curNode = curNode.next;
-      lastMovingNode = itemsInLineLinkedListTail;
-      if (lastMovingNode != null) {
-        lastMovingNode.Value().distanceToNextItem += SLOTS_PER_BELT;
-      }
+      numBeltsAddedOnFront++;
     }
 
-    // TODO: Merge line items too. Right now we assume next belt is always empty which is incorrect
-
-    // Reset second line, it's empty now.
+    // Clear up the second line.
     lineToAppend.currentBelts.Clear();
     lineToAppend.beltLinkedListHead = null;
     lineToAppend.beltLinkedListTail = null;
+
+    // Now merge the item in line contents. If there's nothing in the first line, just copy
+    // the other line, and distances/etc will be correct since we merge front to back.
+    Node<ItemInLine> lastItemInFirstLine = itemsInLineTail;
+    if (lastItemInFirstLine == null) {
+      itemsInLineHead = lineToAppend.itemsInLineHead;
+      itemsInLineTail = lineToAppend.itemsInLineTail;
+      lastMovingNode = lineToAppend.lastMovingNode;
+      lineToAppend.itemsInLineHead = null;
+      lineToAppend.itemsInLineTail = null;
+      lineToAppend.lastMovingNode = null;
+      return;
+    }
+
+    Node<ItemInLine> firstItemInSecondLine = lineToAppend.itemsInLineHead;
+    int additionalDistanceToFront = numBeltsAddedOnFront * SLOTS_PER_BELT;
+    // If there's nothing in the second line, there's nothing to do here other than up update
+    // distance.
+    if (firstItemInSecondLine == null) {
+      itemsInLineTail.Value().distanceToNextItem += additionalDistanceToFront;
+      lastMovingNode = itemsInLineTail;
+      lineToAppend.itemsInLineHead = null;
+      lineToAppend.itemsInLineTail = null;
+      lineToAppend.lastMovingNode = null;
+      return;
+    }
+
+    // Otherwise, merge the two item lists but it will require updating the distance of the
+    // items in the first line.
+    int distanceToFirstItemInSecondLine = 0;
+    Node<ItemInLine> curItemInSecondLine = lineToAppend.itemsInLineTail;
+    while (curItemInSecondLine != null) {
+      distanceToFirstItemInSecondLine += curItemInSecondLine.Value().distanceToNextItem;
+      curItemInSecondLine = curItemInSecondLine.previous;
+    }
+
+    itemsInLineTail.Value().distanceToNextItem +=
+      additionalDistanceToFront - distanceToFirstItemInSecondLine;
+    itemsInLineTail = lineToAppend.itemsInLineTail;
+    lastMovingNode = lineToAppend.lastMovingNode;
+    lineToAppend.itemsInLineHead = null;
+    lineToAppend.itemsInLineTail = null;
+    lineToAppend.lastMovingNode = null;
     return;
   }
 
@@ -112,43 +235,33 @@ public class TransportLine {
       return false;
     }
 
-    Debug.Print($"\nAdding item to TransportLine {this}");
+    Debug.Print($"\nAdding item to TransportLine");
     int curIndex = 0;
     int cumulativeDistance = 0;
     Node<Belt> curBeltNode = beltLinkedListTail;
-    Node<ItemInLine> curItemInLineNode = itemsInLineLinkedListTail;
+    Node<ItemInLine> curItemInLineNode = itemsInLineTail;
+    Node<ItemInLine> nextItemInLine = null;
 
-    // Starting from the end of the transport line, iterate both belts + transport line backward
-    // (belts first), until we reach the belt/transport lines for the targetted belt, where
-    // we will attempt to fit an item.
+    // Then starting both belts + transport line backward (belts first), until we reach the
+    // belt/transport lines for the targeted belt, where we will attempt to add an item.
     while (curBeltNode != null) {
       int curBeltDistanceWindowMax = (STEPS_PER_BELT * curIndex) + STEPS_PER_BELT;
-
-      int cumulativeDistanceUpToThisBelt = cumulativeDistance;
       bool isTargetBelt = curBeltNode.Value() == belt;
-      List<Node<ItemInLine>> lineItemsForThisBelt = new List<Node<ItemInLine>>();
-      Node<ItemInLine> maybeNextItemInLineInSeparateBelt = curItemInLineNode?.next;
 
       // Iterate the item LinkedList until we are out of the current belt and into the previous.
       while (curItemInLineNode != null &&
              cumulativeDistance + curItemInLineNode.Value().distanceToNextItem <= curBeltDistanceWindowMax) {
         cumulativeDistance += curItemInLineNode.Value().distanceToNextItem;
-        if (isTargetBelt) {
-          lineItemsForThisBelt.Add(curItemInLineNode);
-        }
+        nextItemInLine = curItemInLineNode;
         curItemInLineNode = curItemInLineNode.previous;
       }
 
       if (isTargetBelt) {
         Debug.Print(
           $"Adding to BeltIndex: {curIndex}, Cumulative distance {cumulativeDistance}");
-        Node<ItemInLine> nextItemInLineInSeparateBelt =
-          lineItemsForThisBelt.Contains(maybeNextItemInLineInSeparateBelt) ?
-          null : maybeNextItemInLineInSeparateBelt;
         bool result = MaybePlaceItemInBeltSegment(
-          item, curIndex, cumulativeDistanceUpToThisBelt,
-          lineItemsForThisBelt, nextItemInLineInSeparateBelt);
-        Debug.Print($"Result to {this}");
+          item, curIndex, cumulativeDistance, nextItemInLine);
+        // Debug.Print($"{this}");
         return result; // todo inline
       }
 
@@ -162,13 +275,15 @@ public class TransportLine {
   private bool MaybePlaceItemInBeltSegment(
       TempItem item,
       int beltIndex,
-      int cumulativeDistanceUpToThisBelt,
-      List<Node<ItemInLine>> lineItemsForThisBelt,
-      Node<ItemInLine> nextItemInLineInSeparateBelt) {
-    Debug.Print($"Current line items for Belt {String.Join(", ", lineItemsForThisBelt)}");
+      int cumulativeDistance,
+      Node<ItemInLine> nextItemInLine) {
+    //Debug.Print($"Current line items for Belt {String.Join(", ", lineItemsForThisBelt)}");
 
-    // If there's already the max amount of ItemInLine for this belt stop there.
-    if (lineItemsForThisBelt.Count >= SLOTS_PER_BELT) {
+    int beltFirstSlotDistanceIfEmptyLine = (STEPS_PER_BELT * beltIndex) + STEPS_PER_BELT;
+
+    // If there next item in line has a cumulativeDistance that is equal to the end slot
+    // for the item we are trying to place, fail to add.
+    if (cumulativeDistance == beltFirstSlotDistanceIfEmptyLine) {
       return false;
     }
 
@@ -178,42 +293,44 @@ public class TransportLine {
 
     // If there's no other item in the whole Transport Line, add it directly in the
     // first slot at the right distance and start the Line of items and we are done.
-    int beltDistanceFromTransportLineStart = (STEPS_PER_BELT * beltIndex);
-    if (itemsInLineLinkedListHead == null) {
-      AddFirstTransportLineItem(item, beltDistanceFromTransportLineStart + STEPS_PER_BELT);
+    if (itemsInLineHead == null) {
+      AddFirstTransportLineItem(item, beltFirstSlotDistanceIfEmptyLine);
+      Debug.Print($"Case 1: First item in line {itemsInLineTail}");
       return true;
     }
 
-    // If we have items in this belt already, we need to figure out where to fit this item.
-    // TODO: implement this correctly somehow??? currently not actually correct.
-    if (lineItemsForThisBelt.Count > 0) {
-      bool[] slotOccupied = new bool[SLOTS_PER_BELT];
-      lineItemsForThisBelt.Last().AddBefore(new ItemInLine(item, 1));
-      if (lineItemsForThisBelt.Last() == itemsInLineLinkedListHead) {
-        itemsInLineLinkedListHead = lineItemsForThisBelt.Last().previous;
-      }
-      return true;
-    }
-
-    // Otherwise, if we are here there's no items in this belt, but there are *some* items
-    // in the line.
-    // If there's an item in line after this one, we will attach ourselves to it
-    if (nextItemInLineInSeparateBelt != null) {
+    // Otherwise, if there's an item in line after this one, we will attach ourselves to it
+    if (nextItemInLine != null) {
       // Compute the distance from the beginning of this belt to the next item in line.
-      int distanceFromNextBeltLine =
-        ((STEPS_PER_BELT * beltIndex) + 1) -
-        (cumulativeDistanceUpToThisBelt + nextItemInLineInSeparateBelt.Value().distanceToNextItem);
-      nextItemInLineInSeparateBelt.AddBefore(new ItemInLine(item, distanceFromNextBeltLine));
-      if (nextItemInLineInSeparateBelt == itemsInLineLinkedListHead) {
-        itemsInLineLinkedListHead = nextItemInLineInSeparateBelt.previous;
+      int distanceFromNextItem =
+        beltFirstSlotDistanceIfEmptyLine - cumulativeDistance;
+      nextItemInLine.AddBefore(new ItemInLine(item, distanceFromNextItem));
+
+      // There may be items after this one that require fixing too. We also make sure the
+      // rest of the transport line is functional.
+      // TODO: refactor, some duplication with below, better varirables, etc
+      if (nextItemInLine.previous.previous != null) {
+        nextItemInLine.previous.previous.Value().distanceToNextItem -= distanceFromNextItem;
       }
+      if (nextItemInLine == itemsInLineHead) {
+        itemsInLineHead = nextItemInLine.previous;
+      }
+      if (lastMovingNode == null) {
+        lastMovingNode = nextItemInLine.previous;
+      }
+      Debug.Print($"Case 2: Item ahead in line {nextItemInLine.previous}");
       return true;
     }
 
-    // Otherwise, there must be an item before us in line, which by definition must be the tail.
-    // We simply compute distance to end of belt and move on.
-    itemsInLineLinkedListTail.AddAfter(new ItemInLine(item, beltDistanceFromTransportLineStart));
-    itemsInLineLinkedListTail = itemsInLineLinkedListTail.next;
+    // Otherwise, there must be an item before us in line. Because we know there's no item next,
+    // and no item in this belt, the item before *has* to be the tail. We update its distance.
+    itemsInLineTail.AddAfter(new ItemInLine(item, beltFirstSlotDistanceIfEmptyLine));
+    itemsInLineTail.Value().distanceToNextItem -= beltFirstSlotDistanceIfEmptyLine;
+    itemsInLineTail = itemsInLineTail.next;
+    if (lastMovingNode == null) {
+      lastMovingNode = itemsInLineTail;
+    }
+    Debug.Print($"Case 3: Item before in line {itemsInLineTail}");
     return true;
   }
 
@@ -221,10 +338,30 @@ public class TransportLine {
     return beltLinkedListTail.Value();
   }
 
-  public void TryToOutputToNextTransportLine(TransportLine nextTransportLine) {
-    if (nextTransportLine == null) {
+  public void TryToOutputToNextTransportLine(TransportLine nextTransportLine, Belt facingBelt) {
+    if (nextTransportLine == null || facingBelt == null) {
       return;
     }
+
+    Node<ItemInLine> itemToOutput = itemsInLineTail;
+    if (itemToOutput == null || itemToOutput.Value().distanceToNextItem != 1) {
+      return;
+    }
+
+    bool itemOutputSuccessful = nextTransportLine.MaybePlaceItemInBelt(
+      itemToOutput.Value().itemType, facingBelt);
+    if (!itemOutputSuccessful) {
+      return;
+    }
+
+    itemsInLineTail = itemToOutput.previous;
+    if (itemsInLineTail != null) {
+      itemsInLineTail.Value().distanceToNextItem +=
+        itemToOutput.Value().distanceToNextItem;
+    } else {
+      itemsInLineHead = null;
+    }
+    Debug.Print("Line result after output " + this.ToString());
   }
 
   public void AdvanceTransportLine() {
@@ -232,16 +369,19 @@ public class TransportLine {
       return;
     }
 
-    if (lastMovingNode.Value().distanceToNextItem > 1) {
-      lastMovingNode.Value().distanceToNextItem--;
-      return;
+    // Movable items may have been added after the last moved item, let's make sure we move that
+    // one.
+    while (lastMovingNode.next != null && lastMovingNode.next.Value().distanceToNextItem > 1) {
+      lastMovingNode = lastMovingNode.next;
     }
 
-    if (lastMovingNode.Value().distanceToNextItem == 1) {
-      if (lastMovingNode.previous != null) {
-        lastMovingNode = lastMovingNode.previous;
-      }
-      return;
+    // Find the first movable item from the lookup place.
+    while (lastMovingNode != null && lastMovingNode.Value().distanceToNextItem == 1) {
+      lastMovingNode = lastMovingNode.previous;
+    }
+
+    if (lastMovingNode != null) {
+      lastMovingNode.Value().distanceToNextItem--;
     }
   }
 
@@ -254,12 +394,11 @@ public class TransportLine {
 
     int cumulativeDistance = 0;
     Node<Belt> curBeltNode = beltLinkedListTail;
-    Node<ItemInLine> curItemInLineNode = itemsInLineLinkedListTail;
+    Node<ItemInLine> curItemInLineNode = itemsInLineTail;
 
     // Iterate both the Belt and ItemInLine linked list together. It likely doesn't matter
     // which one you use, so we iterate the belt one for consistenct with previous code.
     while (curBeltNode != null) {
-      int curBeltDistanceWindowMin = (STEPS_PER_BELT * curIndex);
       int curBeltDistanceWindowMax = (STEPS_PER_BELT * curIndex) + STEPS_PER_BELT;
 
       // If the current item loop is not in the belt, also move the item node backwards so that
@@ -268,13 +407,12 @@ public class TransportLine {
       while (curItemInLineNode != null &&
              cumulativeDistance + curItemInLineNode.Value().distanceToNextItem <= curBeltDistanceWindowMax) {
         cumulativeDistance += curItemInLineNode.Value().distanceToNextItem;
+        int slotForItem = curBeltDistanceWindowMax - cumulativeDistance;
+        Godot.Vector2 worldPosition = isTopTransportLine ?
+          curBeltNode.Value().GetWorldPositionForTopSlot(slotForItem) :
+          curBeltNode.Value().GetWorldPositionForBottomSlot(slotForItem);
         itemsToDraw.Add(
-          new ItemToDraw(
-            curItemInLineNode.Value().itemType,
-            curBeltNode.Value().GetWorldPositionForTopSlot(
-                curBeltDistanceWindowMax - cumulativeDistance
-              )
-            ));
+          new ItemToDraw(curItemInLineNode.Value().itemType, worldPosition));
         curItemInLineNode = curItemInLineNode.previous;
       }
       curBeltNode = curBeltNode.previous;
@@ -301,7 +439,7 @@ public class TransportLine {
     if (currentBelts.Contains(belt)) {
       return;
     }
-    belt.SetTransportLine(this);
+    belt.SetTransportLine(this, isTopTransportLine);
     currentBelts.Add(belt);
 
     if (beltLinkedListTail == null) {
@@ -315,7 +453,7 @@ public class TransportLine {
     if (currentBelts.Contains(belt)) {
       return;
     }
-    belt.SetTransportLine(this);
+    belt.SetTransportLine(this, isTopTransportLine);
     currentBelts.Add(belt);
 
     if (beltLinkedListHead == null) {
@@ -331,9 +469,9 @@ public class TransportLine {
   }
 
   private void AddFirstTransportLineItem(TempItem item, int distance) {
-    this.itemsInLineLinkedListHead = new Node<ItemInLine>(new ItemInLine(item, distance));
-    this.itemsInLineLinkedListTail = itemsInLineLinkedListHead;
-    this.lastMovingNode = this.itemsInLineLinkedListHead;
+    this.itemsInLineHead = new Node<ItemInLine>(new ItemInLine(item, distance));
+    this.itemsInLineTail = itemsInLineHead;
+    this.lastMovingNode = this.itemsInLineHead;
   }
 
   public class ItemToDraw {
@@ -410,23 +548,43 @@ public class TransportLine {
   public override string ToString() {
     Node<Belt> curBeltNode = beltLinkedListHead;
     StringBuilder sb = new StringBuilder();
-    sb.Append("TransportLine belts: [");
+    int numOfSlots = 0;
     while (curBeltNode != null) {
-      sb.Append(curBeltNode.Value().ToString());
-      sb.Append(", ");
+      sb.Append("|<<<<");
       curBeltNode = curBeltNode.next;
+      numOfSlots += SLOTS_PER_BELT;
     }
-    sb.Append("null]");
+    sb.Append("|eol \n");
+    // sb.Append("TransportLine belts: [");
+    // while (curBeltNode != null) {
+    //   sb.Append(curBeltNode.Value().ToString());
+    //   sb.Append(", ");
+    //   curBeltNode = curBeltNode.next;
+    // }
+    // sb.Append("null] ");
 
-    sb.Append("\n");
-    Node<ItemInLine> curItemNode = itemsInLineLinkedListHead;
-    sb.Append("TransportLine contents: [");
-    while (curItemNode != null) {
-      sb.Append(curItemNode.Value().ToString());
-      sb.Append(", ");
-      curItemNode = curItemNode.next;
+    Node<ItemInLine> curItemNode = itemsInLineTail;
+    int curDistance = curItemNode == null ? 0 : curItemNode.Value().distanceToNextItem;
+    for (int i = 0; i < numOfSlots; i++) {
+      if (i % 4 == 0) {
+        sb.Append("|");
+      }
+      curDistance = Math.Max(0, curDistance - 1);
+      if (curDistance == 0 && curItemNode != null) {
+        sb.Append(curItemNode.Value().itemType.ToString().First());
+        curItemNode = curItemNode.previous;
+        curDistance = curItemNode == null ? 0 : curItemNode.Value().distanceToNextItem;
+      } else {
+        sb.Append("X");
+      }
     }
-    sb.Append("null] ");
+    sb.Append("|eol \n");
     return sb.ToString();
+  }
+
+  private enum SplitPhase {
+    LEFT,
+    MIDDLE,
+    RIGHT
   }
 }

@@ -1,0 +1,61 @@
+[gd_resource type="Resource" script_class="Item" load_steps=19 format=3 uid="uid://cgqujutgvo0ec"]
+
+[ext_resource type="Script" path="res://Resources/Items/Scripts/CoolingMaterialInfo.cs" id="1_3kohq"]
+[ext_resource type="Texture2D" uid="uid://cfvvayw2i707l" path="res://Assets/Textures/Items/pile-dust-crushed-iron-ore-1.png" id="1_7q6d4"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/FuelInfo.cs" id="1_l3j23"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/HeatingMaterialInfo.cs" id="3_2n7ga"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/Item.cs" id="3_vlq4v"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/StructuralMaterialInfo.cs" id="4_rhv70"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/MagneticMaterialInfo.cs" id="5_ag5x2"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/OrganicMaterialInfo.cs" id="6_qygnn"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/ProcessorInfo.cs" id="8_k3ljs"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/TeleportationMaterialInfo.cs" id="11_4akr6"]
+
+[sub_resource type="Resource" id="Resource_b5qkd"]
+script = ExtResource("1_3kohq")
+
+[sub_resource type="Resource" id="Resource_ow1rj"]
+script = ExtResource("1_l3j23")
+
+[sub_resource type="Resource" id="Resource_h4qix"]
+script = ExtResource("3_2n7ga")
+
+[sub_resource type="Resource" id="Resource_m2bc1"]
+script = ExtResource("5_ag5x2")
+
+[sub_resource type="Resource" id="Resource_685b4"]
+script = ExtResource("6_qygnn")
+
+[sub_resource type="Resource" id="Resource_4oyr8"]
+script = ExtResource("8_k3ljs")
+
+[sub_resource type="Resource" id="Resource_ll55s"]
+script = ExtResource("4_rhv70")
+materialDurabilityDelta = 73.0
+materialMinTemperatureDelta = 0.0
+materialMaxTemperatureDelta = 0.0
+radiationBlockageDelta = 62.0
+
+[sub_resource type="Resource" id="Resource_cd2a5"]
+script = ExtResource("11_4akr6")
+
+[resource]
+script = ExtResource("3_vlq4v")
+itemId = "iron-ore"
+itemName = "Iron Ore"
+itemIcon = ExtResource("1_7q6d4")
+maxStackSize = 50
+buildingId = ""
+meltingTempC = 2000.0
+boilingTempC = 2862.0
+heatCapacity = 1
+thermalConductivity = 1
+itemBehaviors = []
+structuralMaterialInfo = SubResource("Resource_ll55s")
+fuelInfo = SubResource("Resource_ow1rj")
+magneticMaterialInfo = SubResource("Resource_m2bc1")
+organicMaterialInfo = SubResource("Resource_685b4")
+teleportationMaterialInfo = SubResource("Resource_cd2a5")
+processorInfo = SubResource("Resource_4oyr8")
+heatingMaterialInfo = SubResource("Resource_h4qix")
+coolingMaterialInfo = SubResource("Resource_b5qkd")

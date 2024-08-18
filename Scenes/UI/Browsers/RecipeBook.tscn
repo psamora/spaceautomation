@@ -1,0 +1,612 @@
+[gd_scene load_steps=25 format=3 uid="uid://bjimd3f2vrqhu"]
+
+[ext_resource type="Texture2D" uid="uid://dnicsxqjr8ub0" path="res://Assets/Textures/UI/Button 2.png" id="1_02y4c"]
+[ext_resource type="Theme" uid="uid://dphrfm8me5gxu" path="res://Scenes/UI/DefaultTheme.tres" id="1_3fo6l"]
+[ext_resource type="FontFile" uid="uid://jeoa0np48ruj" path="res://Assets/Textures/UI/Oxanium-Bold.ttf" id="1_g78or"]
+[ext_resource type="Script" path="res://Scenes/UI/Browsers/RecipeBook.cs" id="2_buhg5"]
+[ext_resource type="Texture2D" uid="uid://j50h71ukytvl" path="res://Assets/Textures/UI/Button 5.png" id="2_s15ci"]
+[ext_resource type="Texture2D" uid="uid://dn7k2h8cupjo4" path="res://Assets/Textures/UI/Button 4.png" id="3_dquus"]
+[ext_resource type="PackedScene" uid="uid://bufugd0e11vko" path="res://Scenes/UI/EditorPopup.tscn" id="3_tofxl"]
+[ext_resource type="Texture2D" uid="uid://dv6p8ju6c688p" path="res://Assets/Textures/UI/Button 1.png" id="4_p6hl8"]
+[ext_resource type="PackedScene" uid="uid://ba7fsc61apq8a" path="res://Scenes/UI/Browsers/ItemBrowser.tscn" id="4_v3w1x"]
+[ext_resource type="PackedScene" uid="uid://brfqwjawlux3" path="res://Scenes/UI/ItemIcon.tscn" id="6_dve50"]
+[ext_resource type="PackedScene" uid="uid://dj8dskyqjopq4" path="res://Scenes/UI/Browsers/AddItemBehaviorPopup.tscn" id="7_0fk3q"]
+[ext_resource type="PackedScene" uid="uid://dgg152vegpg6g" path="res://Scenes/UI/Browsers/SearchResult.tscn" id="7_dy2ph"]
+[ext_resource type="PackedScene" uid="uid://bh546t5ajf32t" path="res://Scenes/UI/Browsers/ItemBehaviorDisplay.tscn" id="8_gk52v"]
+[ext_resource type="PackedScene" uid="uid://be05tt5k2wr43" path="res://Scenes/UI/Browsers/RecipeInput.tscn" id="11_v8agw"]
+[ext_resource type="PackedScene" uid="uid://b32cfuifmrgbx" path="res://Scenes/UI/Browsers/RecipeOutput.tscn" id="11_vp2h5"]
+[ext_resource type="PackedScene" uid="uid://c3vpygo27yr8u" path="res://Scenes/UI/Browsers/CustomResourceViewer.tscn" id="16_1yql1"]
+[ext_resource type="Script" path="res://Resources/Recipes/Scripts/Recipe.cs" id="17_bqhyb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqbxq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bblp0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k2owx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ew85q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_st4mi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4i4s"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Resource" id="Resource_8qeua"]
+script = ExtResource("17_bqhyb")
+recipeId = ""
+recipeName = ""
+productionTimeInS = 0
+fuelCostInJ = 0
+temperatureOutput = 0.0
+noiseOutput = 0.0
+pollutionOutput = 0.0
+radiationOutput = 0.0
+canBeHandcrafted = false
+canBeModulated = false
+eligibleProducerBuildingId = []
+requiredSpecificItems = []
+requiredItemBehaviors = []
+outputItems = []
+
+[node name="RecipeBook" type="Control" node_paths=PackedStringArray("addNewRecipeButton", "backwardsButton", "forwardsButton", "exitButton", "searchBar", "searchTab", "recipeInfoMenu", "recipeIconContainer", "recipeIcon", "recipeName", "recipeId", "generateRecipeId", "saveButton", "overviewPropertiesViewer", "sideEffectsProprietiesViewer", "unlockedBy", "recipeRequiredItemBehaviorsContainer", "addRequiredItemBehaviorButton", "recipeSpecificRequiredItemsContainer", "addSpecificRequiredItemButton", "recipeOutputContainer", "addRecipeOutputButton", "canBeProducedOnContainer", "addCanBeProducedOnButton", "unsavedChangesLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_3fo6l")
+script = ExtResource("2_buhg5")
+editorPopupScene = ExtResource("3_tofxl")
+itemBrowserScene = ExtResource("4_v3w1x")
+addNewRecipeButton = NodePath("VBoxContainer/TopBar/HBoxContainer/AddRecipeButton")
+backwardsButton = NodePath("VBoxContainer/TopBar/HBoxContainer/BackwardsButton")
+forwardsButton = NodePath("VBoxContainer/TopBar/HBoxContainer/ForwardsButton")
+exitButton = NodePath("VBoxContainer/TopBar/HBoxContainer/ExitButton")
+searchBar = NodePath("VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab/SearchBar")
+searchTab = NodePath("VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab")
+searchResultScene = ExtResource("7_dy2ph")
+recipeInfoMenu = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu")
+recipeIconContainer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon/RecipeIconContainer")
+recipeIcon = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon/RecipeIconContainer/RecipeIconBorder/RecipeIcon")
+recipeName = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/RecipeName")
+recipeId = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/HBoxContainer/RecipeId")
+generateRecipeId = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/HBoxContainer/GenerateRecipeIdButton")
+saveButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/SaveRecipeButton")
+overviewPropertiesViewer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/RecipeMetadata/CustomResourceViewer")
+sideEffectsProprietiesViewer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/RecipeSideEffects/CustomResourceViewer")
+unlockedBy = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/UnlockedBy")
+recipeInputScene = ExtResource("11_v8agw")
+itemBehaviorPopupScene = ExtResource("7_0fk3q")
+itemBehaviorDisplayScene = ExtResource("8_gk52v")
+recipeRequiredItemBehaviorsContainer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredItemTypes")
+addRequiredItemBehaviorButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredItemTypes/AddRequiredItemTypeButton")
+recipeSpecificRequiredItemsContainer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredSpecificItems")
+addSpecificRequiredItemButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredSpecificItems/AddRequiredSpecificInputButton")
+recipeOutputScene = ExtResource("11_vp2h5")
+recipeOutputContainer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputs")
+addRecipeOutputButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputs/AddOutputButton")
+canBeProducedOnScene = ExtResource("6_dve50")
+canBeProducedOnContainer = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildings")
+addCanBeProducedOnButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildings/AddBuildingButton")
+unsavedChangesLabel = NodePath("VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/UnsavedChangesLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="TopBar" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_3fo6l")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+theme_override_font_sizes/font_size = 28
+text = "   RECIPE BOOK  "
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Control" type="Control" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="AddRecipeButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("1_02y4c")
+
+[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="BackwardsButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("2_s15ci")
+
+[node name="ForwardsButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("3_dquus")
+
+[node name="VSeparator5" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="ExitButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("4_p6hl8")
+
+[node name="VSeparator6" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="MainPanel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("1_3fo6l")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="SelectionMenu" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 1
+theme = ExtResource("1_3fo6l")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="SearchTab" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="SearchBar" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab"]
+layout_mode = 2
+placeholder_text = "Search..."
+
+[node name="RecipeInfoMenu" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="Panel" type="Panel" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00095, 0.997016)
+mouse_filter = 1
+theme = ExtResource("1_3fo6l")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Recipe Description" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="RecipeOverviewSection" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverviewSection"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Label" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverviewSection"]
+layout_mode = 2
+tooltip_text = "The buildings that are able to produce this recipe."
+mouse_filter = 0
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+text = "Recipe Overview
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverviewSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeOverview" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 50
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Icon" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeIconContainer" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon"]
+layout_mode = 2
+
+[node name="RecipeIconBorder" type="Panel" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon/RecipeIconContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_styles/panel = SubResource("StyleBoxFlat_j4i4s")
+
+[node name="RecipeIcon" type="TextureRect" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon/RecipeIconContainer/RecipeIconBorder"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme = ExtResource("1_3fo6l")
+expand_mode = 4
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Icon"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Name" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 7
+
+[node name="RecipeName" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+placeholder_text = "Recipe Name"
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeId" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+placeholder_text = "recipe-id"
+alignment = 1
+editable = false
+
+[node name="GenerateRecipeIdButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+text = "<"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="SaveRecipeButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/Name"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+text = "Save"
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeMetadata" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 15
+
+[node name="CustomResourceViewer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/RecipeMetadata" instance=ExtResource("16_1yql1")]
+layout_mode = 2
+resourceTypeToUse = SubResource("Resource_8qeua")
+propertiesToInclude = ["productionTimeInS", "fuelCostInJ", "canBeHandcrafted", "canBeModulated"]
+
+[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeSideEffects" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 15
+
+[node name="CustomResourceViewer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/RecipeSideEffects" instance=ExtResource("16_1yql1")]
+layout_mode = 2
+resourceTypeToUse = SubResource("Resource_8qeua")
+propertiesToInclude = ["temperatureOutput", "noiseOutput", "pollutionOutput", "radiationOutput"]
+
+[node name="VSeparator5" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="UnlockedBy" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+
+[node name="UnlockedBy" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview/UnlockedBy"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+tooltip_text = "Base value (in seconds) for how long it takes to producing this recipe once. Building-level speed modifiers may change the final number."
+mouse_filter = 0
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+text = "Unlocked By:"
+vertical_alignment = 1
+
+[node name="VSeparator6" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOverview"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeInputsSection" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputsSection"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Label" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputsSection"]
+layout_mode = 2
+tooltip_text = "The buildings that are able to produce this recipe."
+mouse_filter = 0
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+text = "Recipe Inputs
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputsSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeInputs" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 10
+
+[node name="RequiredItemTypes" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs"]
+layout_mode = 2
+
+[node name="AddRequiredItemTypeButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredItemTypes"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("1_02y4c")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs"]
+layout_mode = 2
+
+[node name="RequiredSpecificItems" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs"]
+layout_mode = 2
+
+[node name="AddRequiredSpecificInputButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeInputs/RequiredSpecificItems"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("1_02y4c")
+
+[node name="RecipeOutputsSection" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputsSection"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Label" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputsSection"]
+layout_mode = 2
+tooltip_text = "The buildings that are able to produce this recipe."
+mouse_filter = 0
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+text = "Recipe Outputs
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputsSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="RecipeOutputs" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 10
+
+[node name="AddOutputButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/RecipeOutputs"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("1_02y4c")
+
+[node name="EligibleBuildingsSection" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildingsSection"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+
+[node name="Label" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildingsSection"]
+layout_mode = 2
+tooltip_text = "The buildings that are able to produce this recipe."
+mouse_filter = 0
+theme = ExtResource("1_3fo6l")
+theme_override_fonts/font = ExtResource("1_g78or")
+text = "Can Be Produced On
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildingsSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_3fo6l")
+
+[node name="EligibleBuildings" type="HBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_3fo6l")
+theme_override_constants/separation = 10
+
+[node name="AddBuildingButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description/EligibleBuildings"]
+layout_mode = 2
+theme = ExtResource("1_3fo6l")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("1_02y4c")
+
+[node name="UnsavedChangesLabel" type="Label" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g78or")
+theme_override_font_sizes/font_size = 8
+text = "* Unsaved changes"
+horizontal_alignment = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer/RecipeInfoMenu/Panel/ScrollContainer/Recipe Description"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1

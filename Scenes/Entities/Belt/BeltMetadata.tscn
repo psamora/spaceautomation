@@ -1,0 +1,89 @@
+[gd_scene load_steps=5 format=3 uid="uid://bt2r6yt5vgqie"]
+
+[ext_resource type="Texture2D" uid="uid://cpm0vsmsffcmj" path="res://Scenes/Entities/Belt/transport-belt.png" id="1_mhg8c"]
+[ext_resource type="Texture2D" uid="uid://bakyl74hvcmek" path="res://Assets/Textures/Items/iron-ore.png" id="1_xt0u6"]
+[ext_resource type="Texture2D" uid="uid://bld8y6gnkb0cg" path="res://Assets/Textures/Items/copper-ore.png" id="2_but0t"]
+[ext_resource type="Script" path="res://Scenes/Entities/Belt/BeltMetadata.cs" id="2_kmeu2"]
+
+[node name="BeltMetadata" type="Sprite2D"]
+visible = false
+texture_filter = 1
+texture = ExtResource("1_mhg8c")
+centered = false
+offset = Vector2(-16, -16)
+hframes = 16
+vframes = 20
+script = ExtResource("2_kmeu2")
+
+[node name="RightSlots" type="Node2D" parent="."]
+visible = false
+y_sort_enabled = true
+position = Vector2(16, 16)
+
+[node name="FirstSlotTop" type="Sprite2D" parent="RightSlots"]
+visible = false
+position = Vector2(-11, -6)
+texture = ExtResource("1_xt0u6")
+
+[node name="LastSlotTop" type="Sprite2D" parent="RightSlots"]
+visible = false
+position = Vector2(13, -6)
+texture = ExtResource("1_xt0u6")
+
+[node name="FirstSlotBottom" type="Sprite2D" parent="RightSlots"]
+visible = false
+position = Vector2(-11, 8)
+texture = ExtResource("2_but0t")
+
+[node name="LastSlotBottom" type="Sprite2D" parent="RightSlots"]
+visible = false
+position = Vector2(13, 8)
+texture = ExtResource("2_but0t")
+
+[node name="UpSlots" type="Node2D" parent="."]
+visible = false
+position = Vector2(16, 16)
+
+[node name="FirstSlotTop" type="Sprite2D" parent="UpSlots"]
+visible = false
+position = Vector2(-8, 11)
+texture = ExtResource("1_xt0u6")
+
+[node name="LastSlotTop" type="Sprite2D" parent="UpSlots"]
+visible = false
+position = Vector2(-8, -12)
+texture = ExtResource("1_xt0u6")
+
+[node name="FirstSlotBottom" type="Sprite2D" parent="UpSlots"]
+visible = false
+position = Vector2(8, 11)
+texture = ExtResource("2_but0t")
+
+[node name="LastSlotBottom" type="Sprite2D" parent="UpSlots"]
+visible = false
+position = Vector2(8, -12)
+texture = ExtResource("2_but0t")
+
+[node name="RightDownSlots" type="Node2D" parent="."]
+visible = false
+position = Vector2(16, 16)
+
+[node name="FirstSlotTop" type="Sprite2D" parent="RightDownSlots"]
+visible = false
+position = Vector2(-11, -6)
+texture = ExtResource("1_xt0u6")
+
+[node name="LastSlotTop" type="Sprite2D" parent="RightDownSlots"]
+visible = false
+position = Vector2(8, 15)
+texture = ExtResource("1_xt0u6")
+
+[node name="FirstSlotBottom" type="Sprite2D" parent="RightDownSlots"]
+visible = false
+position = Vector2(-11, 8)
+texture = ExtResource("2_but0t")
+
+[node name="LastSlotBottom" type="Sprite2D" parent="RightDownSlots"]
+visible = false
+position = Vector2(-8, 14)
+texture = ExtResource("2_but0t")

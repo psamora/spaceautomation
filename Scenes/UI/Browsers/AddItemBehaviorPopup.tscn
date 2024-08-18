@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=3 uid="uid://dj8dskyqjopq4"]
+
+[ext_resource type="Script" path="res://AddItemBehaviorPopup.cs" id="1_1dmlq"]
+[ext_resource type="PackedScene" uid="uid://bh546t5ajf32t" path="res://Scenes/UI/Browsers/ItemBehaviorDisplay.tscn" id="2_xptt5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6qtyo"]
+bg_color = Color(0.145098, 0.168627, 0.203922, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="AddItemBehaviorPopup" type="Panel" node_paths=PackedStringArray("behaviorContainer", "addItemButton")]
+custom_minimum_size = Vector2(300, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -200.0
+offset_right = 150.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_6qtyo")
+script = ExtResource("1_1dmlq")
+behaviorContainer = NodePath("ScrollContainer/VBoxContainer")
+itemBehaviorDisplayScene = ExtResource("2_xptt5")
+addItemButton = NodePath("ScrollContainer/VBoxContainer/AddItemButton")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="AddItemButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close
+"

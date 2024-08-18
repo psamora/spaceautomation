@@ -1,0 +1,75 @@
+[gd_scene load_steps=4 format=3 uid="uid://c3vpygo27yr8u"]
+
+[ext_resource type="Script" path="res://Scenes/UI/Browsers/CustomResourceViewer.cs" id="1_t8lgw"]
+[ext_resource type="Theme" uid="uid://dphrfm8me5gxu" path="res://Scenes/UI/DefaultTheme.tres" id="2_j110h"]
+[ext_resource type="FontFile" uid="uid://jeoa0np48ruj" path="res://Assets/Textures/UI/Oxanium-Bold.ttf" id="3_1eyhw"]
+
+[node name="CustomResourceViewer" type="Control" node_paths=PackedStringArray("hBoxContainer", "vBoxContainer", "defaultLabel", "defaultHSlider", "defaultHBoxContainer")]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_top = 1.0
+offset_right = 40.0
+offset_bottom = 41.0
+mouse_filter = 1
+script = ExtResource("1_t8lgw")
+hBoxContainer = NodePath("ResourceViewerPanel/HBoxContainer")
+vBoxContainer = NodePath("ResourceViewerPanel/VBoxContainer")
+defaultLabel = NodePath("DefaultLabel")
+defaultHSlider = NodePath("DefaultHSlider")
+defaultHBoxContainer = NodePath("DefaultHBoxContainer")
+
+[node name="ResourceViewerPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ResourceViewerPanel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ResourceViewerPanel"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DefaultLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+tooltip_text = "Base cost for how much noise (in dB) the machine producing this recipe will emit after producing this recipe once. Building-level noise modifiers may change the final number."
+mouse_filter = 0
+theme = ExtResource("2_j110h")
+theme_override_fonts/font = ExtResource("3_1eyhw")
+text = "Default String"
+
+[node name="DefaultHSlider" type="HSlider" parent="."]
+visible = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 0
+theme = ExtResource("2_j110h")
+
+[node name="DefaultHBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+size_flags_horizontal = 4
+theme = ExtResource("2_j110h")
+theme_override_constants/separation = 0

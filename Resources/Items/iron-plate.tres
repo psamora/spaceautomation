@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://dtckfudxeigdu"]
+
+[ext_resource type="Texture2D" uid="uid://bpkq2lowayamk" path="res://Assets/Textures/Items/metal-ingot-iron-1.png" id="1_byltm"]
+[ext_resource type="Script" path="res://Resources/Items/Scripts/Item.cs" id="2_6g1gu"]
+
+[resource]
+script = ExtResource("2_6g1gu")
+itemId = "iron-plate"
+itemName = "Iron Plate"
+maxStackSize = 100
+itemIcon = ExtResource("1_byltm")
+buildingId = ""
+meltingTempC = 1538.0
+boilingTempC = 2862.0

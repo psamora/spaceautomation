@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://be05tt5k2wr43"]
+
+[ext_resource type="Theme" uid="uid://dphrfm8me5gxu" path="res://Scenes/UI/DefaultTheme.tres" id="1_ao6sy"]
+[ext_resource type="PackedScene" uid="uid://brfqwjawlux3" path="res://Scenes/UI/ItemIcon.tscn" id="2_odqjl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdsdu"]
+
+[node name="RecipeInput" type="VBoxContainer"]
+offset_right = 89.0
+offset_bottom = 103.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_ao6sy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ItemAmount" type="LineEdit" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("1_ao6sy")
+text = "1"
+alignment = 1
+
+[node name="RemoveButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_rdsdu")
+text = "X"
+
+[node name="ItemIcon" parent="." instance=ExtResource("2_odqjl")]
+unique_name_in_owner = true
+layout_mode = 2
