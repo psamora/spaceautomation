@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://c62pvdvyne5kv"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_nu22b"]
+
+[resource]
+script = ExtResource("1_nu22b")
+planetTypeName = "Terra"
+placementCategory = 0

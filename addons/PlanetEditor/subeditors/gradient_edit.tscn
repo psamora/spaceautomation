@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn8faq56sn4kb"]
+
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/gradient_edit.gd" id="1_8t08f"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wfyos"]
+resource_local_to_scene = true
+
+[node name="GradientEdit2" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_8t08f")
+
+[node name="GradientBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 1
+
+[node name="GradientTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+texture = SubResource("GradientTexture1D_wfyos")
+
+[node name="ColorCursor" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 1)
+width = 1.0
+default_color = Color(1, 1, 1, 0.501961)
+
+[node name="Overlay" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="ColorDraggables" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+
+[connection signal="gui_input" from="Overlay" to="." method="_on_overlay_gui_input"]
+[connection signal="resized" from="Overlay" to="." method="_on_overlay_resized"]
+[connection signal="gui_input" from="ColorDraggables" to="." method="_on_color_draggables_gui_input"]
+[connection signal="resized" from="ColorDraggables" to="." method="_on_color_draggables_resized"]

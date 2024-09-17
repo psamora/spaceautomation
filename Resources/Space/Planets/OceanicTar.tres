@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://cmxoj44g00p2a"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_p0s71"]
+
+[resource]
+script = ExtResource("1_p0s71")
+planetTypeName = ""
+placementCategory = 0
+possibleDistanceFromStar = null

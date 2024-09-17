@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="StarSystemDef" load_steps=2 format=3 uid="uid://bc6uyxisi84mv"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/StarSystemDef.cs" id="1_npqb5"]
+
+[resource]
+script = ExtResource("1_npqb5")
+starTypeName = "G"
+maxTemperatureC = 4900.0
+minTemperatureC = 5700.0
+maxTempColor = Color(1, 0.937255, 0.929412, 1)
+minTempColor = Color(1, 0.882353, 0.780392, 1)
+minSizeInSolarR = 0.9
+maxSizeInSolarR = 1.1
+minNumberToGenerate = 1
+probability = 0.15
+minNumPlanets = 4
+maxNumPlanets = 8

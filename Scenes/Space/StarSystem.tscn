@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://bhpc51l0gs06d"]
+
+[ext_resource type="Script" path="res://Scenes/Space/StarSystem.cs" id="1_chhb6"]
+[ext_resource type="Texture2D" uid="uid://bv62yojwrgvx3" path="res://addons/kenney_particle_pack/fire_02.png" id="2_e3ffy"]
+[ext_resource type="Texture2D" uid="uid://qucfqnw0w3ns" path="res://addons/kenney_particle_pack/star_03.png" id="3_sw54x"]
+[ext_resource type="Texture2D" uid="uid://qmb7cvavfvts" path="res://addons/kenney_particle_pack/star_05.png" id="4_qj1ug"]
+
+[sub_resource type="Curve" id="Curve_am85n"]
+_data = [Vector2(0.25, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.895652, 0), -5.81319, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3jbjk"]
+curve = SubResource("Curve_am85n")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ymgs1"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 30.0
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 180.0
+angular_velocity_min = -10.0
+angular_velocity_max = -5.00002
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 9.99998
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -3.0
+radial_accel_max = 3.0
+color = Color(0.486275, 0.486275, 1, 1)
+alpha_curve = SubResource("CurveTexture_3jbjk")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_gu8hc"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_x2wct"]
+blend_mode = 1
+
+[node name="StarSystem" type="Node2D"]
+modulate = Color(0.486275, 0.486275, 1, 1)
+scale = Vector2(0.2, 0.2)
+script = ExtResource("1_chhb6")
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+modulate = Color(0.666667, 0.666667, 0.666667, 1)
+position = Vector2(10, -2)
+amount = 250
+process_material = SubResource("ParticleProcessMaterial_ymgs1")
+texture = ExtResource("2_e3ffy")
+lifetime = 8.0
+preprocess = 8.0
+fixed_fps = 60
+local_coords = true
+
+[node name="OuterTexture" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0.392157)
+material = SubResource("CanvasItemMaterial_gu8hc")
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_sw54x")
+
+[node name="InnerTexture" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_x2wct")
+scale = Vector2(4, 4)
+texture = ExtResource("4_qj1ug")

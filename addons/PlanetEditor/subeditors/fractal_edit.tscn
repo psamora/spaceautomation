@@ -1,0 +1,92 @@
+[gd_scene load_steps=4 format=3 uid="uid://g10apdr24ys4"]
+
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/fractal_edit.gd" id="1_g1oqh"]
+[ext_resource type="PackedScene" uid="uid://uxh4tk6ptv5p" path="res://addons/PlanetEditor/subeditors/vector2_input.tscn" id="2_xtcvt"]
+[ext_resource type="PackedScene" uid="uid://dp8qyy5atmqri" path="res://addons/PlanetEditor/subeditors/label_input_slider.tscn" id="3_yryxl"]
+
+[node name="FractalEdit" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g1oqh")
+
+[node name="ControlGrid" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+
+[node name="NoiseType" type="OptionButton" parent="ControlGrid"]
+layout_mode = 2
+selected = 3
+item_count = 6
+popup/item_0/text = "Simplex"
+popup/item_1/text = "Simplex Smooth"
+popup/item_1/id = 1
+popup/item_2/text = "Cellular"
+popup/item_2/id = 2
+popup/item_3/text = "Perlin"
+popup/item_3/id = 3
+popup/item_4/text = "Value Cubic"
+popup/item_4/id = 4
+popup/item_5/text = "Value"
+popup/item_5/id = 5
+
+[node name="Offset" parent="ControlGrid" instance=ExtResource("2_xtcvt")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Offset"
+
+[node name="Octaves" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+label = "Octaves"
+min_value = 1.0
+max_value = 16.0
+value = 1.0
+step = 1.0
+
+[node name="Seed" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+rounded = true
+label = "Seed"
+max_value = 666666.0
+step = 1.0
+
+[node name="Gain" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Gain"
+max_value = 2.0
+step = 0.01
+
+[node name="WeightedStrength" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Weighted Strength"
+step = 0.01
+
+[node name="Frequency" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Frequency"
+step = 0.001
+
+[node name="Lacunarity" parent="ControlGrid" instance=ExtResource("3_yryxl")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Lacunarity"
+max_value = 16.0
+value = 2.0
+step = 0.01
+
+[connection signal="item_selected" from="ControlGrid/NoiseType" to="." method="_on_noise_type_item_selected"]
+[connection signal="value_changed" from="ControlGrid/Offset" to="." method="_on_offset_value_changed"]
+[connection signal="value_changed" from="ControlGrid/Octaves" to="." method="_on_octaves_value_changed"]
+[connection signal="value_changed" from="ControlGrid/Seed" to="." method="_on_seed_value_changed"]
+[connection signal="value_changed" from="ControlGrid/Gain" to="." method="_on_gain_value_changed"]
+[connection signal="value_changed" from="ControlGrid/WeightedStrength" to="." method="_on_weighted_strength_value_changed"]
+[connection signal="value_changed" from="ControlGrid/Frequency" to="." method="_on_frequency_value_changed"]
+[connection signal="value_changed" from="ControlGrid/Lacunarity" to="." method="_on_lacunarity_value_changed"]

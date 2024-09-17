@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://dle5l63bu24bw"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_weqq6"]
+
+[resource]
+script = ExtResource("1_weqq6")
+name = "Highland"
+isPassable = true
+isConstructable = true
+terrainType = 1
+movementModifierPercent = -20.0

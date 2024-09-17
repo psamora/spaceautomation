@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dixrogm305tqx"]
+
+[node name="SystemEdge" type="Line2D"]
+default_color = Color(0.666667, 0.666667, 0.666667, 0.196078)
+antialiased = true

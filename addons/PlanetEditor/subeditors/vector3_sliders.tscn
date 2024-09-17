@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://tt3sx0r1ixar"]
+
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/vector3_sliders.gd" id="1_57y0r"]
+[ext_resource type="PackedScene" uid="uid://dp8qyy5atmqri" path="res://addons/PlanetEditor/subeditors/label_input_slider.tscn" id="2_r6y18"]
+
+[node name="Vector3Sliders" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_57y0r")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+
+[node name="R" parent="." instance=ExtResource("2_r6y18")]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+
+[node name="G" parent="." instance=ExtResource("2_r6y18")]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+
+[node name="B" parent="." instance=ExtResource("2_r6y18")]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+
+[connection signal="value_changed" from="R" to="." method="_on_r_value_changed"]
+[connection signal="value_changed" from="G" to="." method="_on_g_value_changed"]
+[connection signal="value_changed" from="B" to="." method="_on_b_value_changed"]

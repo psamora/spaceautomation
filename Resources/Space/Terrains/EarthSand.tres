@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://bgxirfdv34u04"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_84nle"]
+
+[resource]
+script = ExtResource("1_84nle")
+name = "Sand"
+isPassable = true
+isConstructable = true
+terrainType = 1
+movementModifierPercent = -25.0

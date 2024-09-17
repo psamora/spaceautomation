@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=3 uid="uid://0xqjqlf1n546"]
+
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/noise_material_editor.gd" id="1_e28me"]
+[ext_resource type="PackedScene" uid="uid://cn8faq56sn4kb" path="res://addons/PlanetEditor/subeditors/gradient_edit.tscn" id="2_u4qm2"]
+[ext_resource type="PackedScene" path="res://addons/PlanetEditor/subeditors/curve_editor.tscn" id="3_odtav"]
+[ext_resource type="PackedScene" uid="uid://dp8qyy5atmqri" path="res://addons/PlanetEditor/subeditors/label_input_slider.tscn" id="4_8ab4n"]
+
+[node name="NoiseMaterialEditor" type="HBoxContainer"]
+script = ExtResource("1_e28me")
+
+[node name="Editors" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GradientEditLabel" type="Label" parent="Editors"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Diffuse"
+
+[node name="GradientEdit" parent="Editors" instance=ExtResource("2_u4qm2")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+draggable_height = 24.0
+
+[node name="HeightEditorLabel" type="Label" parent="Editors"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Height"
+
+[node name="HeightEditor" parent="Editors" instance=ExtResource("3_odtav")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_vertical = 3
+lock_x = true
+lock_point_creation = true
+
+[node name="HeightStrength" parent="Editors" instance=ExtResource("4_8ab4n")]
+layout_mode = 2
+label = "Strength"
+max_value = 32.0
+value = 8.0
+
+[node name="SpecularEditorLabel" type="Label" parent="Editors"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Specular"
+
+[node name="SpecularEditor" parent="Editors" instance=ExtResource("3_odtav")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_vertical = 3
+lock_x = true
+lock_point_creation = true
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="GradientColorPicker" type="ColorPicker" parent="."]
+layout_mode = 2
+picker_shape = 1
+sampler_visible = false
+color_modes_visible = false
+hex_visible = false
+presets_visible = false
+
+[connection signal="changed" from="Editors/GradientEdit" to="." method="_on_gradient_edit_changed"]
+[connection signal="point_added" from="Editors/GradientEdit" to="." method="_on_gradient_edit_point_added"]
+[connection signal="point_changed" from="Editors/GradientEdit" to="." method="_on_gradient_edit_point_changed"]
+[connection signal="point_removed" from="Editors/GradientEdit" to="." method="_on_gradient_edit_point_removed"]
+[connection signal="point_selected" from="Editors/GradientEdit" to="." method="_on_gradient_edit_point_selected"]
+[connection signal="value_changed" from="Editors/HeightStrength" to="." method="_on_height_strength_value_changed"]
+[connection signal="color_changed" from="GradientColorPicker" to="Editors/GradientEdit" method="set_color"]

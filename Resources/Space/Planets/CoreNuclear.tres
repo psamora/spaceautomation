@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://b81x6sknqk3bb"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_eclma"]
+
+[resource]
+script = ExtResource("1_eclma")
+planetTypeName = "Nuclear"
+placementCategory = 1

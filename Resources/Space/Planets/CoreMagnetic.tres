@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://bu5j7uq8sgrtc"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_ckbe5"]
+
+[resource]
+script = ExtResource("1_ckbe5")
+planetTypeName = "Magnetic"
+placementCategory = 1

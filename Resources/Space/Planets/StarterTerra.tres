@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://o61mcnbx5d6g"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_kytqe"]
+
+[resource]
+script = ExtResource("1_kytqe")
+planetTypeName = "Terra"
+placementCategory = 0
+possibleDistanceFromStar = Array[int]([1])

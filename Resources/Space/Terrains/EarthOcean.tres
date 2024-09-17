@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://551u2g4eaefe"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_i0r16"]
+
+[resource]
+script = ExtResource("1_i0r16")
+name = "Earth Ocean"
+isPassable = false
+isConstructable = false
+terrainType = 0
+movementModifierPercent = 0.0

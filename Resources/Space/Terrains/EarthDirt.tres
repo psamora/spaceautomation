@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://cmi7xl3284l8a"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_2wett"]
+
+[resource]
+script = ExtResource("1_2wett")
+name = "Dirt"
+isPassable = true
+isConstructable = true
+terrainType = 1
+movementModifierPercent = 0.0

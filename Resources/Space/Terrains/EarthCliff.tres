@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://vp4o3slmj37t"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_8wil0"]
+
+[resource]
+script = ExtResource("1_8wil0")
+name = "Cliff"
+isPassable = false
+isConstructable = false
+terrainType = 1
+movementModifierPercent = 0.0

@@ -50,7 +50,6 @@ meltingTempC = 2000.0
 boilingTempC = 2862.0
 heatCapacity = 1
 thermalConductivity = 1
-itemBehaviors = []
 structuralMaterialInfo = SubResource("Resource_ll55s")
 fuelInfo = SubResource("Resource_ow1rj")
 magneticMaterialInfo = SubResource("Resource_m2bc1")

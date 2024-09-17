@@ -1,0 +1,240 @@
+[gd_scene load_steps=9 format=3 uid="uid://c05kwy41oh6ax"]
+
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/planet_layer_editor.gd" id="1_2sol2"]
+[ext_resource type="Texture2D" uid="uid://c6wovcwq0ofbn" path="res://addons/PlanetEditor/subeditors/trashcan.png" id="2_bbtcq"]
+[ext_resource type="Texture2D" uid="uid://cs740wgk72wt" path="res://addons/PlanetEditor/subeditors/trashcanOpen.png" id="3_uc8vs"]
+[ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/texture_editor.gd" id="4_2uxbp"]
+[ext_resource type="PackedScene" uid="uid://uxh4tk6ptv5p" path="res://addons/PlanetEditor/subeditors/vector2_input.tscn" id="5_jdqa4"]
+[ext_resource type="PackedScene" uid="uid://dp8qyy5atmqri" path="res://addons/PlanetEditor/subeditors/label_input_slider.tscn" id="6_hnxoe"]
+[ext_resource type="PackedScene" uid="uid://0xqjqlf1n546" path="res://addons/PlanetEditor/subeditors/noise_material_editor.tscn" id="7_n24yy"]
+[ext_resource type="PackedScene" uid="uid://g10apdr24ys4" path="res://addons/PlanetEditor/subeditors/fractal_edit.tscn" id="8_w13h2"]
+
+[node name="PlanetLayerEditor" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_2sol2")
+
+[node name="Controls" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="Controls"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckBox" parent="Controls/Header"]
+layout_mode = 2
+tooltip_text = "Visible"
+button_pressed = true
+
+[node name="LayerName" type="LineEdit" parent="Controls/Header"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+placeholder_text = "Layer Name"
+
+[node name="Delete" type="TextureButton" parent="Controls/Header"]
+texture_filter = 6
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Delete Layer"
+texture_normal = ExtResource("2_bbtcq")
+texture_hover = ExtResource("3_uc8vs")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="HSeparator" type="HSeparator" parent="Controls"]
+layout_mode = 2
+
+[node name="Texture" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Label" type="HBoxContainer" parent="Controls/Texture"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Texture/Label"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+text = "Texture"
+vertical_alignment = 1
+
+[node name="TextureEditor" type="HBoxContainer" parent="Controls/Texture"]
+layout_mode = 2
+script = ExtResource("4_2uxbp")
+
+[node name="TextureSettings" type="VBoxContainer" parent="Controls/Texture/TextureEditor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureFilter" type="HBoxContainer" parent="Controls/Texture/TextureEditor/TextureSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Texture/TextureEditor/TextureSettings/TextureFilter"]
+layout_mode = 2
+text = "Filter"
+
+[node name="LayerFilter" type="OptionButton" parent="Controls/Texture/TextureEditor/TextureSettings/TextureFilter"]
+layout_mode = 2
+item_count = 7
+popup/item_0/text = "Inherit"
+popup/item_1/text = "Nearest"
+popup/item_1/id = 1
+popup/item_2/text = "Linear"
+popup/item_2/id = 2
+popup/item_3/text = "Nearest Mipmap"
+popup/item_3/id = 3
+popup/item_4/text = "Linear Mipmap"
+popup/item_4/id = 4
+popup/item_5/text = "Nearest Anisotropic"
+popup/item_5/id = 5
+popup/item_6/text = "Linear Anisotropic"
+popup/item_6/id = 6
+
+[node name="TextureSize" type="HBoxContainer" parent="Controls/Texture/TextureEditor/TextureSettings"]
+layout_mode = 2
+
+[node name="TextureSize" parent="Controls/Texture/TextureEditor/TextureSettings/TextureSize" instance=ExtResource("5_jdqa4")]
+layout_mode = 2
+label = "Size"
+is_aspect = true
+deferred_mode = true
+
+[node name="SizeToNoise" type="CheckBox" parent="Controls/Texture/TextureEditor/TextureSettings/TextureSize"]
+layout_mode = 2
+text = "Scale Noise Frequency"
+
+[node name="SeamlessBlendSkirt" parent="Controls/Texture/TextureEditor/TextureSettings" instance=ExtResource("6_hnxoe")]
+layout_mode = 2
+size_flags_horizontal = 3
+label = "Seamless Blend Skirt"
+value = 0.3
+step = 0.01
+
+[node name="TextureDisplay" type="VBoxContainer" parent="Controls/Texture/TextureEditor"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureScale" parent="Controls/Texture/TextureEditor/TextureDisplay" instance=ExtResource("5_jdqa4")]
+layout_mode = 2
+label = "Scale"
+value = Vector2(0.5, 0.5)
+is_aspect = true
+
+[node name="TextureOffsetScale" parent="Controls/Texture/TextureEditor/TextureDisplay" instance=ExtResource("6_hnxoe")]
+layout_mode = 2
+label = "Offset Scale"
+min_value = -2.0
+max_value = 2.0
+step = 0.01
+
+[node name="HSeparator5" type="HSeparator" parent="Controls"]
+layout_mode = 2
+
+[node name="Atmosphere" type="VBoxContainer" parent="Controls"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="Label" type="HBoxContainer" parent="Controls/Atmosphere"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Atmosphere/Label"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+text = "Atmosphere"
+vertical_alignment = 1
+
+[node name="AtmosphereColor" type="ColorPickerButton" parent="Controls/Atmosphere/Label"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Color"
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="AtmosphereIntensity" parent="Controls/Atmosphere" instance=ExtResource("6_hnxoe")]
+layout_mode = 2
+label = "Intensity"
+max_value = 2.0
+step = 0.01
+
+[node name="HSeparator2" type="HSeparator" parent="Controls"]
+visible = false
+layout_mode = 2
+
+[node name="Material" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SpecularColorContainer" type="HBoxContainer" parent="Controls/Material"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Controls/Material/SpecularColorContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+text = "Specular"
+vertical_alignment = 1
+
+[node name="SpecularColor" type="ColorPickerButton" parent="Controls/Material/SpecularColorContainer"]
+layout_mode = 2
+text = "Color"
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="SpecularIntensity" parent="Controls/Material" instance=ExtResource("6_hnxoe")]
+layout_mode = 2
+label = "Intensity"
+max_value = 2.0
+value = 0.2
+step = 0.01
+
+[node name="Shininess" parent="Controls/Material" instance=ExtResource("6_hnxoe")]
+layout_mode = 2
+label = "Shininess"
+min_value = 1.0
+max_value = 32.0
+value = 1.0
+step = 0.01
+
+[node name="HSeparator4" type="HSeparator" parent="Controls/Material"]
+layout_mode = 2
+
+[node name="NoiseMaterialEditor" parent="Controls/Material" instance=ExtResource("7_n24yy")]
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="Controls"]
+layout_mode = 2
+
+[node name="Fractal" type="VBoxContainer" parent="Controls"]
+layout_mode = 2
+
+[node name="FractalEdit" parent="Controls/Fractal" instance=ExtResource("8_w13h2")]
+layout_mode = 2
+
+[connection signal="toggled" from="Controls/Header/CheckButton" to="." method="_on_check_button_toggled"]
+[connection signal="text_changed" from="Controls/Header/LayerName" to="." method="_on_text_edit_text_changed"]
+[connection signal="pressed" from="Controls/Header/Delete" to="." method="_on_delete_pressed"]
+[connection signal="item_selected" from="Controls/Texture/TextureEditor/TextureSettings/TextureFilter/LayerFilter" to="Controls/Texture/TextureEditor" method="_on_texture_filter_item_selected"]
+[connection signal="value_changed" from="Controls/Texture/TextureEditor/TextureSettings/TextureSize/TextureSize" to="Controls/Texture/TextureEditor" method="_on_texture_size_value_changed"]
+[connection signal="value_changed" from="Controls/Texture/TextureEditor/TextureSettings/SeamlessBlendSkirt" to="Controls/Texture/TextureEditor" method="_on_seamless_blend_skirt_value_changed"]
+[connection signal="value_changed" from="Controls/Texture/TextureEditor/TextureDisplay/TextureScale" to="Controls/Texture/TextureEditor" method="_on_texture_scale_value_changed"]
+[connection signal="value_changed" from="Controls/Texture/TextureEditor/TextureDisplay/TextureOffsetScale" to="Controls/Texture/TextureEditor" method="_on_texture_offset_scale_value_changed"]
+[connection signal="color_changed" from="Controls/Atmosphere/Label/AtmosphereColor" to="." method="_on_atmosphere_color_color_changed"]
+[connection signal="value_changed" from="Controls/Atmosphere/AtmosphereIntensity" to="." method="_on_atmosphere_intensity_value_changed"]
+[connection signal="color_changed" from="Controls/Material/SpecularColorContainer/SpecularColor" to="." method="_on_specular_color_color_changed"]
+[connection signal="value_changed" from="Controls/Material/SpecularIntensity" to="." method="_on_specular_intensity_value_changed"]
+[connection signal="value_changed" from="Controls/Material/Shininess" to="." method="_on_shininess_value_changed"]
+[connection signal="changed" from="Controls/Fractal/FractalEdit" to="." method="_on_fractal_edit_changed"]

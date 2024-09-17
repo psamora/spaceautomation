@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://bhfdv3xjpsg8v"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_3ym3r"]
+
+[resource]
+script = ExtResource("1_3ym3r")
+name = "ShallowWater"
+isPassable = true
+isConstructable = true
+terrainType = 1
+movementModifierPercent = -50.0

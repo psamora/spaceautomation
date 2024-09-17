@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://cwclxscbxx3cs"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_w4ng1"]
+
+[resource]
+script = ExtResource("1_w4ng1")
+planetTypeName = "Carbon"
+placementCategory = 1
+possibleDistanceFromStar = Array[int]([2, 3])

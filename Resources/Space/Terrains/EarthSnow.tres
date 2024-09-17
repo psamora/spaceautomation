@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="TerrainDef" load_steps=2 format=3 uid="uid://b7hvnwgmjeh0p"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/TerrainDef.cs" id="1_ayu08"]
+
+[resource]
+script = ExtResource("1_ayu08")
+name = "Snow"
+isPassable = true
+isConstructable = true
+terrainType = 1
+movementModifierPercent = -30.0

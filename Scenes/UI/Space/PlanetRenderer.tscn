@@ -1,0 +1,167 @@
+[gd_scene load_steps=22 format=3 uid="uid://dkfcr628dxyif"]
+
+[ext_resource type="Script" path="res://Scenes/UI/Space/PlanetRenderer.cs" id="1_f0wjk"]
+[ext_resource type="Script" path="res://Scenes/UI/Space/PlanetLayerRenderer.cs" id="2_8e1gf"]
+[ext_resource type="Shader" path="res://addons/planet2d/planet.gdshader" id="2_cpk4b"]
+[ext_resource type="Gradient" uid="uid://q8cqmect0y52" path="res://Resources/Space/Gradients/EarthPlanet.tres" id="3_pk3ip"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8hnad"]
+shader = ExtResource("2_cpk4b")
+shader_parameter/texture_scale = Vector2(0.5, 0.5)
+shader_parameter/texture_offset = Vector2(100, 0)
+shader_parameter/atmosphere_color = Vector3(1, 1, 1)
+shader_parameter/atmosphere_intensity = 0.0
+shader_parameter/light_color = Vector3(1, 1, 1)
+shader_parameter/light_direction = Vector3(0, 0, 1)
+shader_parameter/light_minimum = 0.1
+shader_parameter/light_maximum = 1.0
+shader_parameter/specular_color = Vector3(1, 1, 1)
+shader_parameter/specular_intensity = 0.2
+shader_parameter/specular_shininess = 1.0
+shader_parameter/fade = 0.0
+shader_parameter/pixelize_enabled = false
+shader_parameter/pixelize_scale = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e74iy"]
+noise_type = 2
+frequency = 0.002
+fractal_octaves = 9
+fractal_gain = 0.6
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_juwro"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = ExtResource("3_pk3ip")
+noise = SubResource("FastNoiseLite_e74iy")
+
+[sub_resource type="Gradient" id="Gradient_2coyq"]
+offsets = PackedFloat32Array(0.0505804, 0.465141, 0.606256, 0.668783, 0.717589, 0.881009, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 0.09, 0.09, 1, 0.294385, 0.294385, 0.294385, 1, 0.61, 0.61, 0.61, 1, 1, 1, 1, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ve5ke"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+color_ramp = SubResource("Gradient_2coyq")
+noise = SubResource("FastNoiseLite_e74iy")
+
+[sub_resource type="Gradient" id="Gradient_0sa8j"]
+offsets = PackedFloat32Array(0.0505804, 0.465141, 0.606256, 0.668783, 0.717589, 0.881009, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0.18, 0.18, 0.18, 1, 0, 0, 0, 1, 0.41, 0.41, 0.41, 1, 0.63, 0.63, 0.63, 1, 0.59, 0.59, 0.59, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yb20w"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_0sa8j")
+noise = SubResource("FastNoiseLite_e74iy")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_xlwjr"]
+diffuse_texture = SubResource("NoiseTexture2D_juwro")
+normal_texture = SubResource("NoiseTexture2D_ve5ke")
+specular_texture = SubResource("NoiseTexture2D_yb20w")
+specular_shininess = 11.46
+texture_filter = 6
+texture_repeat = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lo26v"]
+shader = ExtResource("2_cpk4b")
+shader_parameter/texture_scale = Vector2(0.5, 0.5)
+shader_parameter/texture_offset = Vector2(100, 0)
+shader_parameter/atmosphere_color = Vector3(1, 1, 1)
+shader_parameter/atmosphere_intensity = 0.0
+shader_parameter/light_color = Vector3(1, 1, 1)
+shader_parameter/light_direction = Vector3(0, 0, 1)
+shader_parameter/light_minimum = 0.1
+shader_parameter/light_maximum = 1.0
+shader_parameter/specular_color = Vector3(1, 1, 1)
+shader_parameter/specular_intensity = 0.2
+shader_parameter/specular_shininess = 1.0
+shader_parameter/fade = 0.0
+shader_parameter/pixelize_enabled = false
+shader_parameter/pixelize_scale = 1.0
+
+[sub_resource type="Gradient" id="Gradient_qw0cy"]
+offsets = PackedFloat32Array(0, 0.539934, 0.849905)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.423529, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vapux"]
+frequency = 0.004
+fractal_octaves = 11
+fractal_lacunarity = 2.3
+fractal_gain = 0.67
+fractal_weighted_strength = 0.24
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wr0e0"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_qw0cy")
+noise = SubResource("FastNoiseLite_vapux")
+
+[sub_resource type="Gradient" id="Gradient_p551i"]
+offsets = PackedFloat32Array(0, 0.539934, 0.849905)
+colors = PackedColorArray(0, 0, 0, 1, 0.08, 0.08, 0.08, 1, 0.16, 0.16, 0.16, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7q4ic"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+color_ramp = SubResource("Gradient_p551i")
+noise = SubResource("FastNoiseLite_vapux")
+
+[sub_resource type="Gradient" id="Gradient_ellwb"]
+offsets = PackedFloat32Array(0, 0.539934, 0.849905)
+colors = PackedColorArray(0, 0, 0, 1, 0.76, 0.76, 0.76, 1, 1, 1, 1, 1)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_nqbq1"]
+width = 2060
+height = 2060
+seamless = true
+color_ramp = SubResource("Gradient_ellwb")
+noise = SubResource("FastNoiseLite_vapux")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_t3xxm"]
+diffuse_texture = SubResource("NoiseTexture2D_wr0e0")
+normal_texture = SubResource("NoiseTexture2D_7q4ic")
+specular_texture = SubResource("NoiseTexture2D_nqbq1")
+specular_shininess = 11.88
+texture_filter = 6
+texture_repeat = 2
+
+[node name="PlanetRenderer" type="Control"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1000.0
+offset_bottom = 1000.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_f0wjk")
+
+[node name="PlanetTexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_8hnad")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_xlwjr")
+script = ExtResource("2_8e1gf")
+
+[node name="AtmosphereTexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_lo26v")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_t3xxm")
+script = ExtResource("2_8e1gf")

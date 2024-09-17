@@ -1,0 +1,24 @@
+[gd_scene load_steps=7 format=3 uid="uid://nwasotwr8blu"]
+
+[ext_resource type="Script" path="res://Scenes/Core/Main.cs" id="1_im6vk"]
+[ext_resource type="PackedScene" uid="uid://bjimd3f2vrqhu" path="res://Scenes/UI/Browsers/RecipeBook.tscn" id="2_hpa5p"]
+[ext_resource type="PackedScene" uid="uid://enqcc1nf3mfx" path="res://Scenes/Systems/Belts/BeltManager.tscn" id="2_pybss"]
+[ext_resource type="PackedScene" uid="uid://ba7fsc61apq8a" path="res://Scenes/UI/Browsers/ItemBrowser.tscn" id="3_6bg5u"]
+[ext_resource type="PackedScene" uid="uid://umt06uq5ixix" path="res://Scenes/Entities/Inserter/Inserter.tscn" id="3_m4u4u"]
+[ext_resource type="PackedScene" uid="uid://blqbm7xo5d1cb" path="res://Scenes/Entities/Test/SpawnerBox.tscn" id="6_6qelk"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("beltManager")]
+script = ExtResource("1_im6vk")
+beltManager = NodePath("BeltManager")
+recipeBookScene = ExtResource("2_hpa5p")
+itemBrowserScene = ExtResource("3_6bg5u")
+
+[node name="BeltSynchronizationTimer" type="Timer" parent="." groups=["BeltTimer"]]
+wait_time = 0.4
+autostart = true
+
+[node name="BeltManager" parent="." instance=ExtResource("2_pybss")]
+inserterScene = ExtResource("3_m4u4u")
+spawnerBoxScene = ExtResource("6_6qelk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

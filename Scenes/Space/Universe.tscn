@@ -1,0 +1,39 @@
+[gd_scene load_steps=13 format=3 uid="uid://cyd1klp0fwn6w"]
+
+[ext_resource type="Script" path="res://Scenes/Space/Universe.cs" id="1_o7a47"]
+[ext_resource type="Resource" uid="uid://dk1uwwmpww7p3" path="res://Resources/Space/Stars/TypeA.tres" id="2_ebvof"]
+[ext_resource type="Texture2D" uid="uid://d2rljfjso71kk" path="res://Scenes/Space/Imports/panorama2.jpg" id="2_nhfjb"]
+[ext_resource type="Resource" uid="uid://bypwm1i6328h8" path="res://Resources/Space/Stars/TypeB.tres" id="3_je052"]
+[ext_resource type="Resource" uid="uid://cy7galj7of5ks" path="res://Resources/Space/Stars/TypeF.tres" id="4_c1vep"]
+[ext_resource type="Resource" uid="uid://bc6uyxisi84mv" path="res://Resources/Space/Stars/TypeG.tres" id="5_s2h7o"]
+[ext_resource type="Resource" uid="uid://bo5c0phxonkbv" path="res://Resources/Space/Stars/TypeK.tres" id="6_g4dow"]
+[ext_resource type="Resource" uid="uid://dtwalsoa0nine" path="res://Resources/Space/Stars/TypeM.tres" id="7_kiy20"]
+[ext_resource type="Resource" uid="uid://b152lin2vbrf4" path="res://Resources/Space/Stars/TypeO.tres" id="8_khnn1"]
+[ext_resource type="PackedScene" uid="uid://bhpc51l0gs06d" path="res://Scenes/Space/StarSystem.tscn" id="9_4yl8o"]
+[ext_resource type="PackedScene" uid="uid://dixrogm305tqx" path="res://Scenes/Space/SystemEdge.tscn" id="10_qxl8l"]
+[ext_resource type="Script" path="res://Scenes/Space/UniverseCamera.cs" id="11_5hlxb"]
+
+[node name="Universe" type="Node2D" node_paths=PackedStringArray("edgesContainer")]
+script = ExtResource("1_o7a47")
+solarSystemDefs = Array[Object]([ExtResource("2_ebvof"), ExtResource("3_je052"), ExtResource("4_c1vep"), ExtResource("5_s2h7o"), ExtResource("6_g4dow"), ExtResource("7_kiy20"), ExtResource("8_khnn1")])
+starSystemScene = ExtResource("9_4yl8o")
+edgeScene = ExtResource("10_qxl8l")
+edgesContainer = NodePath("EdgesContainer")
+
+[node name="TempBG" type="Sprite2D" parent="."]
+modulate = Color(0.336608, 0.336608, 0.336608, 1)
+texture_filter = 6
+scale = Vector2(2, 2)
+texture = ExtResource("2_nhfjb")
+centered = false
+
+[node name="EdgesContainer" type="Node2D" parent="."]
+
+[node name="UniverseCamera" type="Camera2D" parent="."]
+position = Vector2(7680, 4320)
+zoom = Vector2(0.5, 0.5)
+limit_left = 0
+limit_top = 0
+limit_right = 15360
+limit_bottom = 8640
+script = ExtResource("11_5hlxb")
