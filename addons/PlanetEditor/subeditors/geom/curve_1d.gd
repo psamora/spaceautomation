@@ -1,3 +1,4 @@
+@tool
 class_name Curve1D extends Resource
 
 @export var interpolation_mode := Gradient.GRADIENT_INTERPOLATE_LINEAR

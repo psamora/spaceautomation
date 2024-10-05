@@ -31,7 +31,6 @@ public partial class Item : Resource {
   [Export(PropertyHint.Enum, "None, Tiny, Small, Medium, High, Very High, Massive")]
   public Amount thermalConductivity = Amount.TINY;
 
-
   [Export]
   public StructuralMaterialInfo structuralMaterialInfo;
 

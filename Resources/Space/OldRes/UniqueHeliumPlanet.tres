@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://ba5gu8hecu7wk"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_gdjow"]
+
+[resource]
+script = ExtResource("1_gdjow")
+planetId = ""
+planetTypeName = "Carbon"
+placementCategory = 1
+possibleDistanceFromStar = []
+possibleGroundIds = []
+maxGroundTypesPerPlanet = 0
+possibleCoreItemIds = []
+maxCoreTypesPerPlanet = 0
+possibleAtmosphereItemIds = []
+maxAtmosphereElementsPerPlanet = 0

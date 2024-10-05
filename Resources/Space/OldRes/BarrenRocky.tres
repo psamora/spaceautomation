@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://dss6mg4a2qtrf"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_7hn5h"]
+
+[resource]
+script = ExtResource("1_7hn5h")
+planetTypeName = "Carbon"
+placementCategory = 1
+possibleDistanceFromStar = Array[int]([2, 3])
+possibleGroundIds = null
+maxGroundTypesPerPlanet = 0
+possibleCoreItemIds = null
+maxCoreTypesPerPlanet = 0
+possibleAtmosphereItemIds = null
+maxAtmosphereElementsPerPlanet = 0

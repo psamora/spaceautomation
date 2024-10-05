@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://uxh4tk6ptv5p"]
 
 [ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/vector2_input.gd" id="1_fd8wi"]
-[ext_resource type="PackedScene" uid="uid://dt2p0v584t236" path="res://addons/PlanetEditor/subeditors/float_input.tscn" id="2_h34oi"]
+[ext_resource type="PackedScene" uid="uid://dt2p0v584t236" path="res://addons/PlanetEditor/subeditors/FloatInput.tscn" id="2_h34oi"]
 
 [node name="Vector2Input" type="HBoxContainer"]
 script = ExtResource("1_fd8wi")

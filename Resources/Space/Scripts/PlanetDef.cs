@@ -5,11 +5,26 @@ using System.Collections.Generic;
 [GlobalClass]
 [Tool]
 public partial class PlanetDef : Resource {
-  [Export]
-  public string planetTypeName;
+  // Planet Overview
+  [Export] public string planetTypeId;
+  [Export] public string planetTypeName;
+  [Export] public PlanetPlacementCategory placementCategory;
+  [Export] public Godot.Collections.Array<DistanceFromStar> possibleDistanceFromStar;
 
-  [Export]
-  public PlanetPlacementCategory placementCategory;
+  // Planet Layers
+  [Export] public PlanetLayerDef terrainLayer = new PlanetLayerDef();
+  [Export] public PlanetLayerDef cloudLayer = new PlanetLayerDef();
+
+  // Variables below define all possible types of items that can be extracted from ground/core/
+  // atmosphere. We support multiple types of items for each category per planet, but one
+  // will always be picked as primary and compose 80%+ of the planet, and any remaining item picked
+  // will be a minor element.
+  [Export] public Godot.Collections.Array<string> possibleGroundIds;
+  [Export] public int maxGroundTypesPerPlanet;
+  [Export] public Godot.Collections.Array<string> possibleCoreItemIds;
+  [Export] public int maxCoreTypesPerPlanet;
+  [Export] public Godot.Collections.Array<string> possibleAtmosphereItemIds;
+  [Export] public int maxAtmosphereElementsPerPlanet;
 
   public enum PlanetPlacementCategory {
     // A Planet type that is both gameplay critical due to specific resources but also required
@@ -44,9 +59,6 @@ public partial class PlanetDef : Resource {
     // not spawn outside Unique star systems.
     UNIQUE
   }
-
-  [Export]
-  public Godot.Collections.Array<DistanceFromStar> possibleDistanceFromStar;
 
   public enum DistanceFromStar {
     // A Planet type that can be placed at any distance from the sun.

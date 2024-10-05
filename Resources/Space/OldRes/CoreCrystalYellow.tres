@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlanetDef" load_steps=2 format=3 uid="uid://suwcrtq4w07y"]
+
+[ext_resource type="Script" path="res://Resources/Space/Scripts/PlanetDef.cs" id="1_cslsu"]
+
+[resource]
+script = ExtResource("1_cslsu")
+planetTypeName = "Crystal"
+placementCategory = 1
+possibleDistanceFromStar = Array[int]([2, 3])

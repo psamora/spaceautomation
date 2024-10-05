@@ -1,0 +1,355 @@
+[gd_scene load_steps=17 format=3 uid="uid://ch6gnoln6sgl"]
+
+[ext_resource type="Theme" uid="uid://dphrfm8me5gxu" path="res://Scenes/UI/DefaultTheme.tres" id="1_0amgh"]
+[ext_resource type="Script" path="res://Scenes/UI/Editors/PlanetDefEditor.cs" id="2_cq6jv"]
+[ext_resource type="PackedScene" uid="uid://bufugd0e11vko" path="res://Scenes/UI/EditorPopup.tscn" id="3_5uf22"]
+[ext_resource type="PackedScene" uid="uid://dgg152vegpg6g" path="res://Scenes/UI/Browsers/SearchResult.tscn" id="4_i27co"]
+[ext_resource type="FontFile" uid="uid://jeoa0np48ruj" path="res://Assets/Textures/UI/Oxanium-Bold.ttf" id="7_w247b"]
+[ext_resource type="PackedScene" uid="uid://dkfcr628dxyif" path="res://Scenes/UI/Space/PlanetRenderer.tscn" id="8_dpcsi"]
+[ext_resource type="Texture2D" uid="uid://dnicsxqjr8ub0" path="res://Assets/Textures/UI/Button 2.png" id="8_hubuy"]
+[ext_resource type="PackedScene" uid="uid://c05kwy41oh6ax" path="res://Scenes/UI/Editors/PlanetLayerEditor.tscn" id="8_x5og8"]
+[ext_resource type="Texture2D" uid="uid://j50h71ukytvl" path="res://Assets/Textures/UI/Button 5.png" id="9_72ebo"]
+[ext_resource type="Texture2D" uid="uid://dn7k2h8cupjo4" path="res://Assets/Textures/UI/Button 4.png" id="10_1kss1"]
+[ext_resource type="Texture2D" uid="uid://dv6p8ju6c688p" path="res://Assets/Textures/UI/Button 1.png" id="11_jxou8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqbxq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bblp0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k2owx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ew85q"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_st4mi"]
+
+[node name="PlanetDefEditor" type="Control" node_paths=PackedStringArray("topBar", "addNewItemButton", "backwardsButton", "forwardsButton", "exitButton", "planetName", "planetId", "planetRendererView", "planetEditorView", "planetRenderer", "planetDefinitionEditor", "terrainTextureEditor", "cloudTextureEditor", "saveButton", "searchBar", "searchTab", "unsavedChangesLabel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+script = ExtResource("2_cq6jv")
+editorPopupScene = ExtResource("3_5uf22")
+topBar = NodePath("VBoxContainer/TopBar")
+addNewItemButton = NodePath("VBoxContainer/TopBar/HBoxContainer/AddItemButton")
+backwardsButton = NodePath("VBoxContainer/TopBar/HBoxContainer/BackwardsButton")
+forwardsButton = NodePath("VBoxContainer/TopBar/HBoxContainer/ForwardsButton")
+exitButton = NodePath("VBoxContainer/TopBar/HBoxContainer/ExitButton")
+planetName = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name/PlanetName")
+planetId = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name/PlanetId")
+planetRendererView = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetRenderer")
+planetEditorView = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor")
+planetRenderer = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetRenderer/Panel/ScrollContainer/PlanetRenderer")
+planetDefinitionEditor = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition")
+terrainTextureEditor = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Terrain")
+cloudTextureEditor = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Clouds")
+saveButton = NodePath("VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name/SavePlanetButton")
+searchBar = NodePath("VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab/SearchBar")
+searchTab = NodePath("VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab")
+searchResultScene = ExtResource("4_i27co")
+unsavedChangesLabel = NodePath("VBoxContainer/UnsavedChangesLabel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0amgh")
+
+[node name="TopBar" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0amgh")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_0amgh")
+theme_override_fonts/font = ExtResource("7_w247b")
+theme_override_font_sizes/font_size = 28
+text = "PLANET EDITOR"
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="Control" type="Control" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_0amgh")
+
+[node name="VSeparator3" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="AddItemButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("8_hubuy")
+
+[node name="VSeparator4" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="BackwardsButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("9_72ebo")
+
+[node name="ForwardsButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("10_1kss1")
+
+[node name="VSeparator5" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="ExitButton" type="Button" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+theme_override_colors/icon_hover_color = Color(0.783523, 0.783523, 0.783523, 1)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aqbxq")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bblp0")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_k2owx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ew85q")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_st4mi")
+icon = ExtResource("11_jxou8")
+
+[node name="VSeparator6" type="VSeparator" parent="VBoxContainer/TopBar/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="MainPanel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+
+[node name="HSplitContainer" type="HBoxContainer" parent="VBoxContainer/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0amgh")
+
+[node name="SelectionMenu" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0amgh")
+
+[node name="SearchTab" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="SearchBar" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/SelectionMenu/ScrollContainer/SearchTab"]
+layout_mode = 2
+placeholder_text = "Search..."
+
+[node name="PlanetRenderer" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+
+[node name="Panel" type="Panel" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetRenderer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00095, 0.997016)
+mouse_filter = 1
+theme = ExtResource("1_0amgh")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetRenderer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="PlanetRenderer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetRenderer/Panel/ScrollContainer" instance=ExtResource("8_dpcsi")]
+layout_mode = 2
+
+[node name="PlanetEditor" type="Control" parent="VBoxContainer/MainPanel/HSplitContainer"]
+visible = false
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 20.0
+offset_right = -40.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+current_tab = 0
+clip_tabs = false
+
+[node name="Planet Definition" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Name" type="VBoxContainer" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("1_0amgh")
+theme_override_constants/separation = 7
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="PlanetName" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+placeholder_text = "Item Name"
+alignment = 1
+
+[node name="PlanetId" type="LineEdit" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_0amgh")
+placeholder_text = "item-id"
+alignment = 1
+editable = false
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="SavePlanetButton" type="Button" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+text = "Save"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer/Planet Definition/Name"]
+layout_mode = 2
+theme = ExtResource("1_0amgh")
+
+[node name="Terrain" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer" instance=ExtResource("8_x5og8")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Clouds" parent="VBoxContainer/MainPanel/HSplitContainer/PlanetEditor/Panel/ScrollContainer/VBoxContainer/TabContainer" instance=ExtResource("8_x5og8")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="UnsavedChangesLabel" type="Label" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_w247b")
+theme_override_font_sizes/font_size = 8
+text = "* Unsaved changes"
+horizontal_alignment = 2
+
+[node name="SelectionPanel" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="SelectItemButton" type="Button" parent="VBoxContainer/SelectionPanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Select
+"
+
+[node name="CancelButton" type="Button" parent="VBoxContainer/SelectionPanel"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Cancel"

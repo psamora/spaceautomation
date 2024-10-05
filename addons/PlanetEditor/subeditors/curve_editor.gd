@@ -1,3 +1,4 @@
+@tool
 class_name CurveEditor extends Control
 
 @export var curve:Curve1D:

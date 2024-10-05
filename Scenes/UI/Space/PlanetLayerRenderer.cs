@@ -70,6 +70,18 @@ public partial class PlanetLayerRenderer : TextureRect {
     UpdateMaterial();
   }
 
+  public void DisplayPlanetLayerDef(PlanetLayerDef planetLayerDef) {
+    Texture = planetLayerDef.texture;
+    textureScale = planetLayerDef.textureScale;
+    textureOffsetScale = planetLayerDef.textureOffsetScale;
+    //atmosphere
+    //light
+    specularColor = planetLayerDef.specularColor;
+    specularIntensity = planetLayerDef.specularIntensity;
+    specularShininess = planetLayerDef.specularShininess;
+    UpdateMaterial();
+  }
+
   public override void _Process(double delta) {
     shaderMaterial.SetShaderParameter("texture_offset", textureOffset * textureOffsetScale);
   }

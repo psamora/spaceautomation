@@ -4,6 +4,13 @@
 
 [resource]
 script = ExtResource("1_v3bnt")
+planetId = "barren_coreless"
 planetTypeName = "Coreless"
 placementCategory = 0
 possibleDistanceFromStar = []
+possibleGroundIds = null
+maxGroundTypesPerPlanet = 0
+possibleCoreItemIds = null
+maxCoreTypesPerPlanet = 0
+possibleAtmosphereItemIds = null
+maxAtmosphereElementsPerPlanet = 0

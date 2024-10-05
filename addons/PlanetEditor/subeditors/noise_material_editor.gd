@@ -1,3 +1,4 @@
+@tool
 class_name NoiseMaterialEditor extends Control
 
 signal changed()
@@ -8,21 +9,19 @@ signal changed()
 @onready var specular_editor := $Editors/SpecularEditor as CurveEditor
 @onready var gradient_color_picker := $GradientColorPicker as ColorPicker
 
-@export var texture:CanvasTexture:
-	set = set_texture
-
+var texture:CanvasTexture
 var diffuse_texture:NoiseTexture2D
 var normal_texture:NoiseTexture2D
 var specular_texture:NoiseTexture2D
 
-func set_texture(new_texture:CanvasTexture)->void:
+func set_noise_texture(new_texture:CanvasTexture)->void:
+	set_noise_texture_internal(new_texture, Curve1D.new(), Curve1D.new())
+
+func set_noise_texture_internal(new_texture:CanvasTexture, height_curve:Curve1D, specular_curve:Curve1D)->void:
 	texture = new_texture
 	diffuse_texture = texture.diffuse_texture
 	normal_texture = texture.normal_texture
 	specular_texture = texture.specular_texture
-	
-	var height_curve := Curve1D.new()
-	var specular_curve := Curve1D.new()
 	
 	gradient_edit.gradient = diffuse_texture.color_ramp
 	for i in diffuse_texture.color_ramp.get_point_count():

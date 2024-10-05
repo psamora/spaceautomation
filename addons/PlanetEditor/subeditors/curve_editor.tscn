@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://knofx7nqajqr"]
 
 [ext_resource type="Script" path="res://addons/PlanetEditor/subeditors/curve_editor.gd" id="1_4nxkg"]
 
 [node name="CurveEditor" type="Panel"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -11,4 +12,4 @@ script = ExtResource("1_4nxkg")
 
 [node name="LineContainer" type="Node2D" parent="."]
 
-[connection signal="resized" from="." to="." method="_on_resized" flags=18]
+[connection signal="resized" from="." to="." method="_on_resized"]

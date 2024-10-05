@@ -1,3 +1,4 @@
+@tool
 class_name CurveTools
 
 static func curve_to_gradient(target:Gradient, curve:Curve1D)->Gradient:
